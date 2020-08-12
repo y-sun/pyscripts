@@ -11,3 +11,6 @@
 
 ## QE2pos.py
  Transfer QE output to vasp format
+
+## plot-qe-pdos-3d.py
+plot QE projected density of states especially for 3d element
