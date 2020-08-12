@@ -14,3 +14,9 @@
 
 ## plot-qe-pdos-3d.py
 plot QE projected density of states especially for 3d element
+
+## seperate-doscar.py
+seperate projected density of states from DOSCAR of VASP
+
+## plot-vasp-pdos-3d.py
+plot seperate projected density of states especially for 3d element
