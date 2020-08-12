@@ -2,10 +2,18 @@
 
 import numpy as np
 import sys
+import argparse
 import pylab as plt
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-s","--scf", help="input file of SCF results",action='store')
+parser.add_argument("-p","--pdos", help="input file of projected dos",action='store')
+parser.add_argument("-d","--degenerate", help="plot each orbital", action='store_true')
+
+args = parser.parse_args()
+
 #get Ef 
-fscf=open(sys.argv[1],"r")
+fscf=open(args.scf,"r")
 for line in fscf:
     if("the Fermi energy is" in line):
         Ef=float(line.split()[-2])
@@ -14,7 +22,7 @@ for line in fscf:
 fscf.close()
 
 # fe pdos
-data=np.loadtxt(sys.argv[2],skiprows=1)
+data=np.loadtxt(args.pdos,skiprows=1)
 E=data[:,0]-Ef
 t2g_up=data[:,5]+data[:,7]+data[:,11]
 t2g_dn=data[:,6]+data[:,8]+data[:,12]
@@ -31,8 +39,42 @@ plt.plot(E,-eg_dn,c='b')
 plt.axvline(0,ls='--',color='k',lw=0.5)
 plt.legend()
 plt.xlim(-12,5)
-plt.xlabel(r"$E-E_f (eV)$")
+plt.xlabel(r"$E-E_f\ (eV)$")
 plt.ylabel(r"ProjDOS")
-plt.title(sys.argv[3]+", M= "+mag+r" $\mu_B$")
+plt.title("M= "+mag+r" $\mu_B$")
 plt.tight_layout()
 plt.savefig("pdos.png")
+plt.close()
+
+if (args.degenerate):
+    plt.figure(figsize=(8,7))
+    plt.rcParams.update({'font.size': 14})
+    plt.subplot(2,1,1)
+    plt.axhline(0,ls='--',color='k',lw=0.5)
+    plt.axvline(0,ls='--',color='k',lw=0.5)
+    plt.plot(E, data[:,3] ,label=r"$z^2$",c='b')
+    plt.plot(E,-data[:,4] ,c='b')
+    plt.plot(E, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
+    plt.plot(E,-data[:,10],ls='--',c='r')
+    plt.legend()
+    plt.xlim(-12,5)
+    plt.ylabel(r"ProjDOS")
+   
+
+    plt.subplot(2,1,2)
+    plt.axhline(0,ls='--',color='k',lw=0.5)
+    plt.axvline(0,ls='--',color='k',lw=0.5)
+    plt.plot(E, data[:,5] ,marker='x',label=r"$zx$",c='b')
+    plt.plot(E,-data[:,6] ,marker='x',c='b')
+    plt.plot(E, data[:,7] ,label=r"$zy$",c='g')
+    plt.plot(E,-data[:,8] ,c='g')
+    plt.plot(E, data[:,11] ,ls=':',label=r"$xy$",c='r')
+    plt.plot(E,-data[:,12] ,ls=':',c='r')
+    plt.legend()
+    plt.xlim(-12,5)
+    plt.xlabel(r"$E-E_f\ (eV)$")
+    plt.ylabel(r"ProjDOS")
+    plt.tight_layout()
+    plt.savefig("3d.png")
+    plt.close()
+
