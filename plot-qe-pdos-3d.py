@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-s","--scf", help="input file of SCF results",action='store')
 parser.add_argument("-p","--pdos", help="input file of projected dos",action='store')
 parser.add_argument("-d","--degenerate", help="plot each orbital", action='store_true')
+parser.add_argument("-t","--transform", help="swap xy <-> x2-y2", action='store_true')
 
 args = parser.parse_args()
 
@@ -24,10 +25,16 @@ fscf.close()
 # fe pdos
 data=np.loadtxt(args.pdos,skiprows=1)
 E=data[:,0]-Ef
-t2g_up=data[:,5]+data[:,7]+data[:,11]
-t2g_dn=data[:,6]+data[:,8]+data[:,12]
-eg_up=data[:,3]+data[:,9]
-eg_dn=data[:,4]+data[:,10]
+if(args.transform):
+    t2g_up=data[:,5]+data[:,7]+data[:,9] # 5 zx, 7 zy, 9 xy
+    t2g_dn=data[:,6]+data[:,8]+data[:,10]
+    eg_up=data[:,3]+data[:,11]     # 3 z2 11 x2-y2
+    eg_dn=data[:,4]+data[:,12]
+else:
+    t2g_up=data[:,5]+data[:,7]+data[:,11] # 5 zx, 7 zy, 11 xy
+    t2g_dn=data[:,6]+data[:,8]+data[:,12]
+    eg_up=data[:,3]+data[:,9]     # 3 z2 9 x2-y2
+    eg_dn=data[:,4]+data[:,10]
 
 plt.figure(figsize=(8,3.3))
 plt.rcParams.update({'font.size': 14})
@@ -54,8 +61,12 @@ if (args.degenerate):
     plt.axvline(0,ls='--',color='k',lw=0.5)
     plt.plot(E, data[:,3] ,label=r"$z^2$",c='b')
     plt.plot(E,-data[:,4] ,c='b')
-    plt.plot(E, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
-    plt.plot(E,-data[:,10],ls='--',c='r')
+    if(args.transform):
+        plt.plot(E, data[:,11] ,ls='--',label=r"$x^2-y^2$",c='r')
+        plt.plot(E,-data[:,12],ls='--',c='r')
+    else: 
+        plt.plot(E, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
+        plt.plot(E,-data[:,10],ls='--',c='r')
     plt.legend()
     plt.xlim(-12,5)
     plt.ylabel(r"ProjDOS")
@@ -68,8 +79,12 @@ if (args.degenerate):
     plt.plot(E,-data[:,6] ,marker='x',c='b')
     plt.plot(E, data[:,7] ,label=r"$zy$",c='g')
     plt.plot(E,-data[:,8] ,c='g')
-    plt.plot(E, data[:,11] ,ls=':',label=r"$xy$",c='r')
-    plt.plot(E,-data[:,12] ,ls=':',c='r')
+    if(args.transform):
+        plt.plot(E, data[:,9] ,ls=':',label=r"$xy$",c='r')
+        plt.plot(E,-data[:,10] ,ls=':',c='r')
+    else:
+        plt.plot(E, data[:,11] ,ls=':',label=r"$xy$",c='r')
+        plt.plot(E,-data[:,12] ,ls=':',c='r')
     plt.legend()
     plt.xlim(-12,5)
     plt.xlabel(r"$E-E_f\ (eV)$")
