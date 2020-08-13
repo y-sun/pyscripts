@@ -20,3 +20,6 @@ seperate projected density of states from DOSCAR of VASP
 
 ## plot-vasp-pdos-3d.py
 plot seperate projected density of states especially for 3d element
+
+## plot-pymat-vasp-pdos.py
+plot density of state from vasprun.xml with pymatgen
