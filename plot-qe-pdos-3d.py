@@ -80,11 +80,11 @@ if (args.degenerate):
     plt.plot(E, data[:,7] ,label=r"$zy$",c='g')
     plt.plot(E,-data[:,8] ,c='g')
     if(args.transform):
-        plt.plot(E, data[:,9] ,ls=':',label=r"$xy$",c='r')
-        plt.plot(E,-data[:,10] ,ls=':',c='r')
+        plt.plot(E, data[:,9] ,ls='--',label=r"$xy$",c='r')
+        plt.plot(E,-data[:,10] ,ls='--',c='r')
     else:
-        plt.plot(E, data[:,11] ,ls=':',label=r"$xy$",c='r')
-        plt.plot(E,-data[:,12] ,ls=':',c='r')
+        plt.plot(E, data[:,11] ,ls='--',label=r"$xy$",c='r')
+        plt.plot(E,-data[:,12] ,ls='--',c='r')
     plt.legend()
     plt.xlim(-12,5)
     plt.xlabel(r"$E-E_f\ (eV)$")
