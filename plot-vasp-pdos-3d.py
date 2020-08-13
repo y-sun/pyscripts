@@ -30,7 +30,7 @@ plt.plot(E,eg_dn,c='b')
 plt.axvline(0,ls='--',color='k',lw=0.5)
 plt.legend()
 plt.xlim(-12,5)
-if(len(args.ylim) > 0):
+if(args.ylim is not None):
     plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
 plt.xlabel(r"$E-E_f\ (eV)$")
 plt.ylabel(r"ProjDOS")
@@ -50,7 +50,7 @@ if (args.degenerate):
     plt.plot(E,data[:,18],ls='--',c='r')
     plt.legend()
     plt.xlim(-12,5)
-    if(len(args.ylim) > 0):
+    if(args.ylim is not None):
         plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.ylabel(r"ProjDOS")
    
@@ -66,7 +66,7 @@ if (args.degenerate):
     plt.plot(E,data[:,10] ,ls=':',c='r')
     plt.legend()
     plt.xlim(-12,5)
-    if(len(args.ylim) > 0):
+    if(args.ylim is not None):
         plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.xlabel(r"$E-E_f\ (eV)$")
     plt.ylabel(r"ProjDOS")
