@@ -8,6 +8,7 @@ import pylab as plt
 parser = argparse.ArgumentParser()
 parser.add_argument("-p","--pdos", help="seperated projected dos",action='store')
 parser.add_argument("-d","--degenerate", help="plot each orbital", action='store_true')
+parser.add_argument("-y","--ylim", help="y range", nargs='*',action='store')
 
 args = parser.parse_args()
 
@@ -29,6 +30,8 @@ plt.plot(E,eg_dn,c='b')
 plt.axvline(0,ls='--',color='k',lw=0.5)
 plt.legend()
 plt.xlim(-12,5)
+if(len(args.ylim) > 0):
+    plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
 plt.xlabel(r"$E-E_f\ (eV)$")
 plt.ylabel(r"ProjDOS")
 plt.tight_layout()
@@ -47,6 +50,8 @@ if (args.degenerate):
     plt.plot(E,data[:,18],ls='--',c='r')
     plt.legend()
     plt.xlim(-12,5)
+    if(len(args.ylim) > 0):
+        plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.ylabel(r"ProjDOS")
    
 
@@ -61,6 +66,8 @@ if (args.degenerate):
     plt.plot(E,data[:,10] ,ls=':',c='r')
     plt.legend()
     plt.xlim(-12,5)
+    if(len(args.ylim) > 0):
+        plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.xlabel(r"$E-E_f\ (eV)$")
     plt.ylabel(r"ProjDOS")
     plt.tight_layout()
