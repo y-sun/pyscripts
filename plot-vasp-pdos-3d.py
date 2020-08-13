@@ -6,7 +6,7 @@ import argparse
 import pylab as plt
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p","--pdos", help="input file of projected dos",action='store')
+parser.add_argument("-p","--pdos", help="seperated projected dos",action='store')
 parser.add_argument("-d","--degenerate", help="plot each orbital", action='store_true')
 
 args = parser.parse_args()
