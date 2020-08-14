@@ -10,6 +10,9 @@ parser.add_argument("-s","--scf", help="input file of SCF results",action='store
 parser.add_argument("-p","--pdos", help="input file of projected dos",action='store')
 parser.add_argument("-d","--degenerate", help="plot each orbital", action='store_true')
 parser.add_argument("-t","--transform", help="swap xy <-> x2-y2", action='store_true')
+parser.add_argument("-o","--output", help="output raw data", action='store_true')
+parser.add_argument("-x","--xlim", help="x range", nargs='*',action='store')
+parser.add_argument("-y","--ylim", help="y range", nargs='*',action='store')
 
 args = parser.parse_args()
 
@@ -45,13 +48,33 @@ plt.plot(E, eg_up,label=r"$e_{g}$",c='b')
 plt.plot(E,-eg_dn,c='b')
 plt.axvline(0,ls='--',color='k',lw=0.5)
 plt.legend()
-plt.xlim(-12,5)
+if(args.xlim is None):
+    plt.xlim(-12,5)
+else:
+    plt.xlim(float(args.xlim[0]),float(args.xlim[1]))
+if(args.ylim is not None):
+    plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
 plt.xlabel(r"$E-E_f\ (eV)$")
 plt.ylabel(r"ProjDOS")
 plt.title("M= "+mag+r" $\mu_B$")
 plt.tight_layout()
 plt.savefig("pdos.png")
 plt.close()
+
+if(args.output):
+    fout=open("pdos.t2g_eg.dat","w+")
+    print("E-Ef(eV) t2g_up t2g_dn eg_up eg_dn",file=fout)
+    for k in range(E.size):
+        print(E[k],t2g_up[k],t2g_dn[k],eg_up[k],eg_dn[k],file=fout)
+    fout.close()
+
+    fout=open("pdos.d_orbitals.dat","w+")
+    print("E-Ef(eV) z2_up z2_dn x2-y2_up x2-y2_dn zx_up zx_dn zy_up zy_dn xy_up xy_dn",file=fout)
+    for k in range(E.size):
+        print(E[k],data[k,3],data[k,4],data[k,9],data[k,10],
+                data[k,5],data[k,6],data[k,7],data[k,8],data[k,11],data[k,12],file=fout)
+    fout.close()
+
 
 if (args.degenerate):
     plt.figure(figsize=(8,7))
@@ -68,7 +91,12 @@ if (args.degenerate):
         plt.plot(E, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
         plt.plot(E,-data[:,10],ls='--',c='r')
     plt.legend()
-    plt.xlim(-12,5)
+    if(args.xlim is None):
+        plt.xlim(-12,5)
+    else:
+        plt.xlim(float(args.xlim[0]),float(args.xlim[1]))
+    if(args.ylim is not None):
+        plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.ylabel(r"ProjDOS")
    
 
@@ -86,7 +114,12 @@ if (args.degenerate):
         plt.plot(E, data[:,11] ,ls='--',label=r"$xy$",c='r')
         plt.plot(E,-data[:,12] ,ls='--',c='r')
     plt.legend()
-    plt.xlim(-12,5)
+    if(args.xlim is None):
+        plt.xlim(-12,5)
+    else:
+        plt.xlim(float(args.xlim[0]),float(args.xlim[1]))
+    if(args.ylim is not None):
+        plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
     plt.xlabel(r"$E-E_f\ (eV)$")
     plt.ylabel(r"ProjDOS")
     plt.tight_layout()
