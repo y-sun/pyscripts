@@ -5,6 +5,13 @@ import numpy as np
 import math
 from scipy.optimize import leastsq
 from scipy.optimize import fsolve 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-i","--input", help="input file of EV curve, first line ignore",action='store')
+parser.add_argument("-p","--prange", help="pressure range", nargs='*',action='store')
+
+args = parser.parse_args()
 
 # Birch-Murnaghan equation of state
 def eos_birch_murnaghan(params, vol):
@@ -22,7 +29,7 @@ def pv_BM(params, vol):
     return p
 
 
-fin=open(sys.argv[1],"r")
+fin=open(args.input,"r")
 vol=[]; ene=[]; press=[]
 fin.readline()
 for line in fin:
@@ -62,14 +69,14 @@ for k in range(len(vol)):
     print(vol[k],ene[k],E_fitted[k],P_fitted[k])
 
 vfit = np.linspace(min(vol),max(vol),100)
-fout=open(sys.argv[1].strip(".dat")+".PH_fit.dat","w+")
+fout=open(args.input.strip(".dat")+".PH_fit.dat","w+")
 out_P=pv_BM(birch_murn,vfit)
 out_H=eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765
 for k in range(len(out_P)):
     print(out_P[k],out_H[k],file=fout)
 fout.close()
 
-fout=open(sys.argv[1].strip(".dat")+".PV_fit.dat","w+")
+fout=open(args.input.strip(".dat")+".PV_fit.dat","w+")
 out_P=pv_BM(birch_murn,vfit)
 for k in range(len(out_P)):
     print(out_P[k],vfit[k],file=fout)
@@ -96,7 +103,10 @@ plt.legend(loc='best')
 
 # PH
 # solve V for a specific P
-pfit = np.linspace(150,400,100)
+if(args.prange is None):
+    pfit = np.linspace(00,400,100)
+else:
+    pfit= np.linspace(float(args.prange[0]),float(args.prange[1]),100)
 vfit = []
 for Pi in pfit:
     func = lambda V : pv_BM(birch_murn,V)-Pi
@@ -110,7 +120,7 @@ plt.xlabel('P (GPa)')
 plt.ylabel('H (eV/atom)')
 plt.legend(loc='best')
 plt.tight_layout()
-plt.savefig(sys.argv[1].strip(".dat")+".png")
+plt.savefig(args.input.strip(".dat")+".png")
 plt.show()
 
 #'''
