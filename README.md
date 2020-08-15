@@ -23,3 +23,6 @@ plot seperate projected density of states especially for 3d element
 
 ## plot-pymat-vasp-pdos.py
 plot density of state from vasprun.xml with pymatgen
+
+## eos_PH.py
+BM-3rd eos fitting
