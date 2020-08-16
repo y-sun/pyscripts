@@ -26,3 +26,6 @@ plot density of state from vasprun.xml with pymatgen
 
 ## eos_PH.py
 BM-3rd eos fitting
+
+## phonopy2matdyn.py
+Transfer phonpy eigenvalue to matdyn.freq format
