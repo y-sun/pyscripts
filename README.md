@@ -29,3 +29,6 @@ BM-3rd eos fitting
 
 ## phonopy2matdyn.py
 Transfer phonpy eigenvalue to matdyn.freq format
+
+## qe2qha.py 
+Transfer SCF file and matdyn file to *qha* code input
