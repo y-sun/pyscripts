@@ -32,3 +32,6 @@ Transfer phonpy eigenvalue to matdyn.freq format
 
 ## qe2qha.py 
 Transfer SCF file and matdyn file to *qha* code input
+
+## xdat-merge.py
+Merge a few XDATCAR files

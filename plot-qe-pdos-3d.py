@@ -21,6 +21,8 @@ fscf=open(args.scf,"r")
 for line in fscf:
     if("the Fermi energy is" in line):
         Ef=float(line.split()[-2])
+    if("highest occupied level " in line):
+        Ef=float(line.split()[-1])
     if("total magnetization" in line):
         mag=line.split()[-3]
 fscf.close()
