@@ -33,10 +33,8 @@ Transfer phonpy eigenvalue to matdyn.freq format
 ## qe2qha.py 
 Transfer SCF file and matdyn file to *qha* code input
 
-<<<<<<< HEAD
 ## xdat-merge.py
 Merge a few XDATCAR files
-=======
+
 ## compare_ph.py 
 compare QHA results between Phonopy and *qha*
->>>>>>> b67dc64d193ecbf851434025b1364bab2052fce0
