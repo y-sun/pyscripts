@@ -68,16 +68,23 @@ print("vol E_org E_fit P_fit")
 for k in range(len(vol)):
     print(vol[k],ene[k],E_fitted[k],P_fitted[k])
 
+
 vfit = np.linspace(min(vol),max(vol),100)
 fout=open(args.input.strip(".dat")+".PH_fit.dat","w+")
-out_P=pv_BM(birch_murn,vfit)
+if(args.prange is None):
+    out_P=pv_BM(birch_murn,vfit)
+else:
+    out_P=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
 out_H=eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765
 for k in range(len(out_P)):
     print(out_P[k],out_H[k],file=fout)
 fout.close()
 
 fout=open(args.input.strip(".dat")+".PV_fit.dat","w+")
-out_P=pv_BM(birch_murn,vfit)
+if(args.prange is None):
+    out_P=pv_BM(birch_murn,vfit)
+else:
+    out_P=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
 for k in range(len(out_P)):
     print(out_P[k],vfit[k],file=fout)
 fout.close()
@@ -85,6 +92,10 @@ fout.close()
 #'''
 import pylab as plt
 
+if(args.prange is None):
+    pfit = np.linspace(00,400,100)
+else:
+    pfit= np.linspace(float(args.prange[0]),float(args.prange[1]),100)
 # EV
 plt.subplot(2,1,1)
 plt.plot(vol, ene, 'ro')
