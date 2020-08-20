@@ -10,6 +10,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input file of EV curve, first line ignore",action='store')
 parser.add_argument("-p","--prange", help="pressure range", nargs='*',action='store')
+parser.add_argument("-n","--noplot", help="no plotting", action='store_true')
 
 args = parser.parse_args()
 
@@ -68,38 +69,43 @@ print("vol E_org E_fit P_fit")
 for k in range(len(vol)):
     print(vol[k],ene[k],E_fitted[k],P_fitted[k])
 
-
-vfit = np.linspace(min(vol),max(vol),100)
-fout=open(args.input.strip(".dat")+".PH_fit.dat","w+")
+# PV
+# solve V for a specific P, or verse vise
 if(args.prange is None):
-    out_P=pv_BM(birch_murn,vfit)
+    vfit = np.linspace(min(vol),max(vol),100)
+    pfit = pv_BM(birch_murn,vfit)
+    pfit = np.array(pfit)
 else:
-    out_P=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
+    pfit=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
+    vfit=[]
+    for Pi in pfit:
+        func = lambda V : pv_BM(birch_murn,V)-Pi
+        vok  = fsolve(func,x0=vol.min())
+        #print(vok[0],Pi, pv_BM(birch_murn,vok[0]))
+        vfit.append(vok[0])
+    vfit=np.array(vfit)
+
+fout=open(args.input.strip(".dat")+".PH_fit.dat","w+")
 out_H=eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765
-for k in range(len(out_P)):
-    print(out_P[k],out_H[k],file=fout)
+for k in range(pfit.size):
+    print(pfit[k],out_H[k],file=fout)
 fout.close()
 
 fout=open(args.input.strip(".dat")+".PV_fit.dat","w+")
-if(args.prange is None):
-    out_P=pv_BM(birch_murn,vfit)
-else:
-    out_P=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
-for k in range(len(out_P)):
-    print(out_P[k],vfit[k],file=fout)
+for k in range(pfit.size):
+    print(pfit[k],vfit[k],file=fout)
 fout.close()
 
-#'''
-import pylab as plt
+# plot
+if (args.noplot):
+    exit()
 
-if(args.prange is None):
-    pfit = np.linspace(00,400,100)
-else:
-    pfit= np.linspace(float(args.prange[0]),float(args.prange[1]),100)
+import pylab as plt
+vraw = np.linspace(min(vol),max(vol),100)
 # EV
 plt.subplot(2,1,1)
-plt.plot(vol, ene, 'ro')
-plt.plot(vfit, eos_birch_murnaghan(birch_murn,vfit), label='Birch-Murnaghan')
+plt.plot(vol, ene, 'ro', label="raw")
+plt.plot(vraw, eos_birch_murnaghan(birch_murn,vraw), label='Birch-Murnaghan 3rd')
 plt.xlabel('Volume ($\AA^3$/atom)')
 plt.ylabel('Energy (eV/atom)')
 plt.legend(loc='best')
@@ -113,25 +119,16 @@ plt.legend(loc='best')
 #plt.legend(loc='best')
 
 # PH
-# solve V for a specific P
-if(args.prange is None):
-    pfit = np.linspace(00,400,100)
-else:
-    pfit= np.linspace(float(args.prange[0]),float(args.prange[1]),100)
-vfit = []
-for Pi in pfit:
-    func = lambda V : pv_BM(birch_murn,V)-Pi
-    vok  = fsolve(func,x0=vol.min())
-    #print(vok[0],Pi, pv_BM(birch_murn,vok[0]))
-    vfit.append(vok[0])
-
 plt.subplot(2,1,2)
-plt.plot(pv_BM(birch_murn,vfit), eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765, "-o",label="by BM fit")
+if(args.prange is None):
+    plt.plot(pv_BM(birch_murn,vfit), eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765, "-x",
+            markersize=5,label="P range from raw")
+else:
+    plt.plot(pv_BM(birch_murn,vfit), eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765, "-x",
+            markersize=5,label="P range from input")
 plt.xlabel('P (GPa)')
 plt.ylabel('H (eV/atom)')
 plt.legend(loc='best')
 plt.tight_layout()
 plt.savefig(args.input.strip(".dat")+".png")
 plt.show()
-
-#'''
