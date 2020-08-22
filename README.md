@@ -44,3 +44,6 @@ compare QHA results between Phonopy and *qha*
 
 ## poscar2lammps.ase.py
 transfer poscar file to lammps input with ase
+
+## ave-vasp-time.py 
+average time of each MD step by VASP
