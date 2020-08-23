@@ -51,3 +51,5 @@ transform crystal lattice via ase
 ## ave-vasp-time.py 
 average time of each MD step by VASP
 
+## nosymm-dynmat.py
+get full dynamical matrix (dyn file) based on the symmetric ph.x results
