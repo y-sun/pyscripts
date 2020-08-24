@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+import glob
+import numpy as np
+import pylab as plt
+
+nspacing=50; kpoints=['G','X','W','K','G','L']
+
+#fls=sorted(glob.glob("*/qedfpt444/merge-dyns/disp.freq.gp"))
+fls=["./disp.freq.gp","../disp.freq.gp"]
+plt.figure(figsize=(8,6))
+plt.rcParams.update({'font.size': 14})
+colors=plt.cm.rainbow(np.linspace(0,1,len(fls)))
+
+#fin=open("v2p.dat")
+#vp={}
+#for line in fin:
+#    ll=line.split()
+#    vp.update({ll[0]:ll[1]})
+names=["q2qstar","full"]
+lshp=["dashed",'dotted']
+colors=['k','r']
+cm2Thz=0.02998
+
+ct=0
+for ifl in fls:
+    name=ifl.split("/")[0]
+    data=np.loadtxt(ifl)
+    for k in range(1,data.shape[1]):
+        if(k==1):
+            plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct],label=names[ct])
+        else:
+            plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct])
+    ct+=1
+
+ndata=data.shape[0]
+nv=int((ndata-1)/nspacing+0.5)
+vx=[data[k*nspacing][0] for k in range(1,nv)]
+
+for iv in vx:
+    plt.axvline(iv,color='k',lw=0.5)
+plt.axhline(0,color='k',lw=0.5)
+
+plt.xlim(data[0][0],data[-1][0])
+
+a=[data[0][0]]; b=[data[-1][0]]
+xlb=a+vx+b
+ax = plt.subplot(111)
+ax.set_xticks(xlb)
+ax.set_xticklabels(kpoints)
+#plt.ylabel(r"Frequency (cm$^{-1}$)")
+plt.ylabel(r"Frequency (THz)")
+plt.legend(ncol=2,prop={'size': 12}) #bbox_to_anchor=(1, .95))
+plt.tight_layout()
+plt.savefig("total-dispersion.png")
+plt.show()
