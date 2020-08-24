@@ -3,23 +3,41 @@
 import glob
 import numpy as np
 import pylab as plt
+import argparse
 
-nspacing=50; kpoints=['G','X','W','K','G','L']
+parser = argparse.ArgumentParser()
+parser.add_argument("-d","--disp", help="dispersions", nargs='*',action='store')
+parser.add_argument("-k","--kp", help="k points", nargs='*',action='store')
+parser.add_argument("-l","--legend", help="legends", nargs='*',action='store')
+parser.add_argument("-n","--number", help="number of spacing",action='store')
+parser.add_argument("-r","--rainbow", help="rainbow as color", action='store_true')
+args = parser.parse_args()
+
+#nspacing=50; kpoints=['G','X','W','K','G','L']
+nspacing=int(args.number); kpoints=args.kp
 
 #fls=sorted(glob.glob("*/qedfpt444/merge-dyns/disp.freq.gp"))
-fls=["./disp.freq.gp","../disp.freq.gp"]
+#fls=["./disp.freq.gp","../disp.freq.gp"]
+fls=args.disp
 plt.figure(figsize=(8,6))
 plt.rcParams.update({'font.size': 14})
-colors=plt.cm.rainbow(np.linspace(0,1,len(fls)))
+
 
 #fin=open("v2p.dat")
 #vp={}
 #for line in fin:
 #    ll=line.split()
 #    vp.update({ll[0]:ll[1]})
-names=["q2qstar","full"]
-lshp=["dashed",'dotted']
-colors=['k','r']
+if(args.legend is None):
+    names=args.disp
+else:
+    names=args.legend
+if(args.rainbow):
+    colors=plt.cm.rainbow(np.linspace(0,1,len(fls)))
+    lshp=['-' for k in range(100)]
+else:
+    lshp=['-','--','-.',':','o','v']
+    colors=['r','b','g','k','c','m']
 cm2Thz=0.02998
 
 ct=0
