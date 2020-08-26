@@ -23,6 +23,8 @@ for line in fscf:
         Ef=float(line.split()[-2])
     if("highest occupied level " in line):
         Ef=float(line.split()[-1])
+    if("highest occupied," in line):
+        Ef=float(line.split()[-2])
     if("total magnetization" in line):
         mag=line.split()[-3]
 fscf.close()

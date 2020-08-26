@@ -10,6 +10,7 @@ parser.add_argument("-d","--disp", help="dispersions", nargs='*',action='store')
 parser.add_argument("-k","--kp", help="k points", nargs='*',action='store')
 parser.add_argument("-l","--legend", help="legends", nargs='*',action='store')
 parser.add_argument("-n","--number", help="number of spacing",action='store')
+parser.add_argument("-t","--title", help="plot title",action='store')
 parser.add_argument("-r","--rainbow", help="rainbow as color", action='store_true')
 args = parser.parse_args()
 
@@ -36,8 +37,8 @@ if(args.rainbow):
     colors=plt.cm.rainbow(np.linspace(0,1,len(fls)))
     lshp=['-' for k in range(100)]
 else:
-    lshp=['-','--','-.',':','o','v']
-    colors=['r','b','g','k','c','m']
+    lshp=['-','--',':','-.']
+    colors=['k','r','b','g','c','m']
 cm2Thz=0.02998
 
 ct=0
@@ -68,7 +69,12 @@ ax.set_xticks(xlb)
 ax.set_xticklabels(kpoints)
 #plt.ylabel(r"Frequency (cm$^{-1}$)")
 plt.ylabel(r"Frequency (THz)")
-plt.legend(ncol=2,prop={'size': 12}) #bbox_to_anchor=(1, .95))
+if(len(fls) > 4):
+    plt.legend(ncol=2,prop={'size': 12}) #bbox_to_anchor=(1, .95))
+else:
+    plt.legend()
+if(args.title is not None): 
+    plt.title(args.title)
 plt.tight_layout()
 plt.savefig("total-dispersion.png")
 plt.show()
