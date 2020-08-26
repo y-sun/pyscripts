@@ -56,3 +56,6 @@ get full dynamical matrix (dyn file) based on the symmetric ph.x results
 
 ## plot-qedfpt-disp.py
 plot dispersion from QE DFPT results
+
+## scf2soc.py
+transfer a scf input to include SOC parameters
