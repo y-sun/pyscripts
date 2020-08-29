@@ -7,7 +7,8 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--infile", help="input outcar file",action='store')
-parser.add_argument("-p","--percell", help="percell", action='store_true')
+parser.add_argument("-c","--cell", help="per cell", action='store_true')
+parser.add_argument("-s","--simple", help="only E & V", action='store_true')
 parser.add_argument("-e","--ele", help="including electronic entropy, TOTEN", action='store_true')
 args = parser.parse_args()
 
@@ -71,21 +72,39 @@ aV=np.array(V)
 Ep=aE /natom
 Fp=aF /natom
 
-if(args.percell):
-    print("#V(A3/cell) E(eV/cell) P(kbar)")
+if(args.cell):
+    if(args.simple):
+        print("#V(A3/cell) E(eV/cell)")
+    else:
+        print("#V(A3/cell) E(eV/cell) P(kbar)")
     if(args.ele):
         for kk in range(aF.size):
-            print("%10.6f %10.6f %10.4f"%(aV[kk], aF[kk],ap[kk]))
+            if(args.simple):
+                print("%10.6f %10.6f"%(aV[kk], aF[kk]))
+            else:
+                print("%10.6f %10.6f %10.4f"%(aV[kk], aF[kk],ap[kk]))
     else:
         for kk in range(aE.size):
-            print("%10.6f %10.6f %10.4f"%(aV[kk], aE[kk],ap[kk]))
+            if(args.simple):
+                print("%10.6f %10.6f"%(aV[kk], aE[kk]))
+            else:
+                print("%10.6f %10.6f %10.4f"%(aV[kk], aE[kk],ap[kk]))
 else:
-    print("V(A3/atom) E(eV/atom) P(kbar)")
+    if(args.simple):
+        print("V(A3/atom) E(eV/atom)")
+    else:
+        print("V(A3/atom) E(eV/atom) P(kbar)")
     if(args.ele):
         for kk in range(Fp.size):
-            print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Fp[kk], ap[kk]))
+            if(args.simple):
+                print("%10.6f %10.6f"%(aV[kk]/natom, Fp[kk]))
+            else:
+                print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Fp[kk], ap[kk]))
     else:
         for kk in range(Ep.size):
-            print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Ep[kk], ap[kk]))
+            if(args.simple):
+                print("%10.6f %10.6f"%(aV[kk]/natom, Ep[kk]))
+            else:
+                print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Ep[kk], ap[kk]))
 
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
