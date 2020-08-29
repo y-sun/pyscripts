@@ -59,3 +59,9 @@ plot dispersion from QE DFPT results
 
 ## scf2soc.py
 transfer a scf input to include SOC parameters
+
+## vasp52E.py
+get E-V from vasp OUTCAR
+
+## plot-xy.py
+a script to plot general x y files
