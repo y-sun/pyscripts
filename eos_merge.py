@@ -8,7 +8,7 @@ parser.add_argument("-i","--input", help="PH eos", nargs='*',action='store')
 args = parser.parse_args() 
 
 all_sys=[]
-for k in range(1,len(args.input)):
+for k in range(0,len(args.input)):
     all_sys.append(args.input[k])
 
 ct=0
