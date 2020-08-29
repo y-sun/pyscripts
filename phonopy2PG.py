@@ -27,7 +27,7 @@ def pv_BM(params, vol):
     p=3*B0/2*(eta**7-eta**5)*(1+3/4*(Bp-4)*(eta**2-1))*160.21765 # GPa
     return p
 
-def get_BM(eos,name,temp):
+def get_BM(eos,name,temp,vmin):
     birch_murn = eos
     # compute PH
     Pmin=float(args.press[0]); Pmax=float(args.press[1])
@@ -36,7 +36,7 @@ def get_BM(eos,name,temp):
     vfit = []
     for Pi in pfit:
         func = lambda V : pv_BM(birch_murn,V)-Pi
-        vok  = fsolve(func,x0=2.0)
+        vok  = fsolve(func,x0=vmin)
         vfit.append(vok[0])
     vfit=np.array(vfit)
     out_P=pv_BM(birch_murn,vfit)
@@ -57,4 +57,15 @@ for line in fin:
         if(tt in temp):
             lB=fin.readline().split() # E0 B0 Bp V0 of helmholtz
             eos=[float(lB[k]) for k in range(2,6)]
-            get_BM(eos,"PG_"+tt+"K.dat",tt)
+            if(eos[2] < 2 or eos[2] > 8):
+                print("Check your EOS fitting, current B' is",eos[2])
+            vol=[]; helm=[]
+            for line2 in fin :
+                lll=line2.split()
+                if(len(lll)!=2):
+                    break
+                vol.append(float(lll[0]))
+                helm.append(float(lll[1]))
+            vol=np.array(vol)
+            ene=np.array(helm)
+            get_BM(eos,"PG_"+tt+"K.dat",tt, vol.min())
