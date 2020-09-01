@@ -76,7 +76,9 @@ if(args.prange is None):
     pfit = pv_BM(birch_murn,vfit)
     pfit = np.array(pfit)
 else:
-    pfit=np.linspace(float(args.prange[0]),float(args.prange[1]),100)
+    dP=float(args.prange[1])-float(args.prange[0])
+    nP=int(dP+0.5)+1
+    pfit=np.linspace(float(args.prange[0]),float(args.prange[1]),nP)
     vfit=[]
     for Pi in pfit:
         func = lambda V : pv_BM(birch_murn,V)-Pi
@@ -87,11 +89,13 @@ else:
 
 fout=open(args.input.strip(".dat")+".PH_fit.dat","w+")
 out_H=eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765
+print("#P(GPa) H(same_to_input)",file=fout)
 for k in range(pfit.size):
     print(pfit[k],out_H[k],file=fout)
 fout.close()
 
 fout=open(args.input.strip(".dat")+".PV_fit.dat","w+")
+print("#P(GPa) V(same_to_input)",file=fout)
 for k in range(pfit.size):
     print(pfit[k],vfit[k],file=fout)
 fout.close()
