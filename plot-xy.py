@@ -11,6 +11,7 @@ parser.add_argument("-l","--legend", help="legends", nargs='*',action='store')
 parser.add_argument("-t","--title", help="plot title",action='store')
 parser.add_argument("-j","--jump", help="skip rows",action='store')
 parser.add_argument("-r","--rainbow", help="rainbow as color", action='store_true')
+parser.add_argument("-n","--noshow", help="not shown interactively", action='store_true')
 parser.add_argument("-x","--xlabel", help="x label name",action='store')
 parser.add_argument("-y","--ylabel", help="y label name",action='store')
 
@@ -51,4 +52,5 @@ if(args.ylabel is not None):
     plt.ylabel(args.ylabel)
 plt.tight_layout()
 plt.savefig("fig.png")
-plt.show()
+if(not args.noshow):
+    plt.show()

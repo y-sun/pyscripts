@@ -16,6 +16,7 @@ H=[]
 for isys in all_sys:
     fin=open(isys+".PH_fit.dat","r")
     P=[]; ent=[]
+    fin.readline()
     for line in fin:
         ll=line.split()
         P.append(float(ll[0]))
