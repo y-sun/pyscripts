@@ -6,6 +6,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input file of QE results",action='store')
 parser.add_argument("-c","--cell", help="per cell", action='store_true')
+parser.add_argument("-s","--simple", help="EV only", action='store_true')
 parser.add_argument("-n","--notitle", help="no title", action='store_true')
 args = parser.parse_args()
 
@@ -70,9 +71,15 @@ line=0
 
 if(not args.notitle):
     if(args.cell):
-        print("#cal_type V(A^3/cell) E(eV/cell) press(kBar) (Pxx Pyy Pzz) Mag_tot(uB/cell) Mag_ab(uB/cell) Force(all<0.01eV/A)")
+        if(args.simple):
+            print("V(A^3/cell) E(eV/cell)")
+        else:
+            print("#cal_type V(A^3/cell) E(eV/cell) press(kBar) (Pxx Pyy Pzz) Mag_tot(uB/cell) Mag_ab(uB/cell) Force(all<0.01eV/A)")
     else:
-        print("#cal_type V(A^3/atom) E(eV/atom) press(kBar) (Pxx Pyy Pzz) Mag_tot(uB/cell) Mag_ab(uB/cell) Force(all<0.01eV/A)")
+        if(args.simple):
+            print("V(A^3/atom) E(eV/atom)")
+        else:
+            print("#cal_type V(A^3/atom) E(eV/atom) press(kBar) (Pxx Pyy Pzz) Mag_tot(uB/cell) Mag_ab(uB/cell) Force(all<0.01eV/A)")
 
 cal_type="scf"
 for line in fin:
@@ -88,9 +95,15 @@ for line in fin:
         new_type, vol, ene, press, pxx, tot_mag, ab_mag, force=read_QE(fin,vol,cal_type)
         if(args.cell):
             ene_pc="%.6f"%(float(ene)*natom) 
-            print(new_type,vol,ene_pc,press,'(',*pxx,')', tot_mag, ab_mag, force)
+            if(args.simple):
+                print(vol,ene_pc)
+            else:
+                print(new_type,vol,ene_pc,press,'(',*pxx,')', tot_mag, ab_mag, force)
         else:
-            print(new_type,vol/natom,ene,press,'(',*pxx,')', tot_mag, ab_mag, force)
+            if(args.simple):
+                print(vol/natom,ene)
+            else:
+                print(new_type,vol/natom,ene,press,'(',*pxx,')', tot_mag, ab_mag, force)
         if(new_type=="Str_Opt_end"):
             cal_type="scf"
 

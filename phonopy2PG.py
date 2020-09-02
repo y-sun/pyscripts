@@ -42,9 +42,9 @@ def get_BM(eos,name,temp,vmin):
     out_P=pv_BM(birch_murn,vfit)
     out_G=eos_birch_murnaghan(birch_murn,vfit)+pv_BM(birch_murn,vfit)*vfit/160.21765
     fout=open(name,"w+")
-    print("#P(GPa) G(eV/cell)  #T=",temp,"K",file=fout)
+    print("#P(GPa) G(eV/cell) V(A3/cell)  #T=",temp,"K",file=fout)
     for k in range(len(out_P)):
-        print("%.6f  %.10f"%(out_P[k],out_G[k]),file=fout)
+        print("%.6f  %.10f  %.6f"%(out_P[k],out_G[k],vfit[k]),file=fout)
     fout.close()
 
 temp=args.temperatures
