@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input file of EV curve, first line ignore",action='store')
 parser.add_argument("-p","--prange", help="pressure range", nargs='*',action='store')
 parser.add_argument("-n","--noplot", help="no plotting", action='store_true')
+parser.add_argument("-f","--fix", help="fix B' as 4.0", action='store_true')
 
 args = parser.parse_args()
 
@@ -20,6 +21,13 @@ def eos_birch_murnaghan(params, vol):
     E0, B0, Bp, V0 = params 
     eta = (V0/vol)**(1.0/3.0)
     E = E0 + 9.0*B0*V0/16.0 * (eta**2-1.0)**2 * (6.0 + Bp*(eta**2-1.0) - 4.0*eta**2)
+    return E
+
+def eos_birch_murnaghan_fix(params, vol):
+    'From Phys. Rev. B 70, 224107'
+    E0, B0, Bp, V0 = params 
+    eta = (V0/vol)**(1.0/3.0)
+    E = E0 + 9.0*B0*V0/16.0 * (eta**2-1.0)**2 * (6.0 + 4.0*(eta**2-1.0) - 4.0*eta**2)
     return E
 
 def pv_BM(params, vol):
@@ -58,7 +66,10 @@ Bp = 4.0
 x0 = [E0, B0, Bp, V0]
 
 # fit the equations of state
-target = lambda params, y, x: y - eos_birch_murnaghan(params, x)
+if(args.fix):
+    target = lambda params, y, x: y - eos_birch_murnaghan_fix(params, x)
+else:
+    target = lambda params, y, x: y - eos_birch_murnaghan(params, x)
 birch_murn, ier = leastsq(target, x0, args=(ene,vol))
 print("E0 + 9.0*B0*V0/16.0 * (eta**2-1.0)**2 * (6.0 + Bp*(eta**2-1.0) - 4.0*eta**2)")
 #print("E0, B0, Bp, V0=",birch_murn)
