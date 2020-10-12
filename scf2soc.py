@@ -44,13 +44,14 @@ elif(args.mag=="2"):
         elif("Hubbard_U" in line):
             U=float(line.split()[-1])
             uid=line.split("(")[1].split(")")[0]
-            print("Hubbard_U(%s) = %8.4f, Hubbard_J0(%s) = 0.9,"%(uid, U+0.9, uid),file=fout)
+            print("Hubbard_U(%s) = %8.4f, Hubbard_J0(%s) = 0.9, starting_ns_eigenvalue(3,1,%s)=1.0"%(uid, U+0.9, uid,uid),file=fout)
         elif("pseudo_dir" in line):
             print("pseudo_dir = \'/home/yangsun/QE-PSEUDO/pslibrary/rel-pz/PSEUDOPOTENTIALS\'",file=fout)
         elif("occupations" in line):
-            print("occupations=\'fixed\',",file=fout)
+            #print("occupations=\'fixed\',",file=fout)
+            print("occupations=\'smearing\', smearing=\'fd\', degauss = 0.002",file=fout)
         elif("mixing_beta" in line):
-            print("mixing_beta = 0.3",file=fout)
+            print("mixing_beta = 0.3, mixing_fixed_ns = 300",file=fout)
         elif("UPF" in line):
             ll=line.split()
             PP=ll[-1]; sep=PP.split(".")

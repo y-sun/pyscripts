@@ -31,7 +31,7 @@ def get_BM(eos,name,temp,vmin):
     birch_murn = eos
     # compute PH
     Pmin=float(args.press[0]); Pmax=float(args.press[1])
-    Pn=int(Pmax-Pmin+0.5)+1
+    Pn=int((Pmax-Pmin)/0.1+0.5)+1
     pfit = np.linspace(Pmin,Pmax,Pn)
     vfit = []
     for Pi in pfit:

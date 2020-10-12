@@ -72,7 +72,7 @@ plt.ylabel(r"Frequency (THz)")
 if(len(fls) > 4):
     plt.legend(ncol=2,prop={'size': 12}) #bbox_to_anchor=(1, .95))
 else:
-    plt.legend()
+    plt.legend(loc="upper left")
 if(args.title is not None): 
     plt.title(args.title)
 plt.tight_layout()
