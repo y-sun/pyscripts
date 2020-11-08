@@ -8,6 +8,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--infile", help="input outcar file",action='store')
 parser.add_argument("-c","--cell", help="per cell", action='store_true')
+parser.add_argument("-m","--magmom", help="find magnetization", action='store_true')
 parser.add_argument("-s","--simple", help="only E & V", action='store_true')
 parser.add_argument("-e","--ele", help="including electronic entropy, TOTEN", action='store_true')
 args = parser.parse_args()
@@ -59,7 +60,7 @@ for line in fin:
             ll=line.split()
             if(len(ll)>0):
                 if(ll[0]=="tot"):
-                    Mag=float(ll[-1])
+                    Mag=ll[-1] #float(ll[-1])
                     break
     #if("enthalpy is  TOTEN" in line):
     #    ll=line.split()
@@ -106,5 +107,6 @@ else:
                 print("%10.6f %10.6f"%(aV[kk]/natom, Ep[kk]))
             else:
                 print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Ep[kk], ap[kk]))
-
+if(args.magmom):
+    print("magnetization: %s uB/cell, %10.4f uB/atom"%(Mag,float(Mag)/natom))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
