@@ -40,26 +40,31 @@ else:
 for k in range(natom):
     fout=open("pdos_atom_"+str(k)+".dat","w+")
     if(args.spin):
-        print("E-Ef s_up s_dn py_up py_dn pz_up pz_dn px_up px_dn dxy_up dxy_dn dyz_up dyz_dn dz2_up dz2_dn dxz_up dxz_dn dx2-y2_up dx2-y2_dn",file=fout)
+        print("E-Ef s_up s_dn py_up py_dn pz_up pz_dn px_up px_dn dxy_up dxy_dn dyz_up dyz_dn dz2_up dz2_dn dxz_up dxz_dn dx2-y2_up dx2-y2_dn tot_up tot_dn",file=fout)
         fin.readline()
         for k in range(ndata):
             ll=fin.readline().split()
             print(float(ll[0])-Ef, end=" ",file=fout)
+            tot_up=0; tot_dn=0
             for j in range(1,len(ll)):
                 if(j%2==0):
                     print("-"+ll[j],end=" ",file=fout)
+                    tot_dn -= float(ll[j])
                 else:
                     print(ll[j],end=" ",file=fout)
-            print("",file=fout)
+                    tot_up += float(ll[j])
+            print(tot_up, tot_dn,file=fout)
         fout.close()
     else:
-        print("E-Ef s py pz px dxy dyz dz2 dxz dx2-y2",file=fout)
+        print("E-Ef s py pz px dxy dyz dz2 dxz dx2-y2 tot",file=fout)
         fin.readline()
         for k in range(ndata):
             ll=fin.readline().split()
+            tot=0
             print(float(ll[0])-Ef, end=" ",file=fout)
             for j in range(1,len(ll)):
                 print(ll[j],end=" ",file=fout)
-            print("",file=fout)
+                tot+=float(ll[j])
+            print(tot,file=fout)
         fout.close()
         

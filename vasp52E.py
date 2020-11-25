@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--infile", help="input outcar file",action='store')
 parser.add_argument("-c","--cell", help="per cell", action='store_true')
 parser.add_argument("-m","--magmom", help="find magnetization", action='store_true')
+parser.add_argument("-n","--noext", help="no extropolation to sigma->0", action='store_true')
 parser.add_argument("-s","--simple", help="only E & V", action='store_true')
 parser.add_argument("-e","--ele", help="including electronic entropy, TOTEN", action='store_true')
 args = parser.parse_args()
@@ -47,8 +48,10 @@ for line in fin:
         natom=int(ll[len(ll)-1])
     if("energy  without entropy=" in line):
         ll=line.split()
-        E.append(float(ll[-1])) #"sigma->0"
-        #E.append(float(ll[3])) #"without entropy"
+        if(args.noext):
+            E.append(float(ll[3])) #"without entropy"
+        else:
+            E.append(float(ll[-1])) #"sigma->0"
     if("free  energy   TOTEN" in line):
         ll=line.split()
         F.append(float(ll[-2]))

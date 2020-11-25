@@ -71,3 +71,6 @@ get G v.s. P from helmholtz-volume of Phonopy
 
 ## v2d.py
 VASP OUTCAR to DPMD raw data
+
+## kp4QE.py
+generate kpoints as VASP for QE
