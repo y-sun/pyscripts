@@ -74,3 +74,6 @@ VASP OUTCAR to DPMD raw data
 
 ## kp4QE.py
 generate kpoints as VASP for QE
+
+## pe.py
+processing lmp.out
