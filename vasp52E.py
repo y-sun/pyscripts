@@ -17,7 +17,7 @@ args = parser.parse_args()
 J2eV= 1.602176634e-19
 prefix=sys.argv[1].strip("*")
 fin=open(args.infile,"r")
-F=[];E=[]; press=[]; V=[]; Mag='NA'
+F=[];E=[]; press=[]; stress=[]; V=[]; Mag='NA'
 natom=0; vtag=0
 for line in fin:
     #if("external pressure " in line):
@@ -25,6 +25,7 @@ for line in fin:
     #   press.append(float(ll[3]))
     if("in kB" in line):
         ll=line.split()
+        stress.append(ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6]+" "+ll[7])
         try:
             press.append((float(ll[2])+float(ll[3])+float(ll[4]))/3)
         except:
@@ -80,36 +81,36 @@ if(args.cell):
     if(args.simple):
         print("#V(A3/cell) E(eV/cell)")
     else:
-        print("#V(A3/cell) E(eV/cell) P(kbar)")
+        print("#V(A3/cell) E(eV/cell) P(kbar) Stress(kbar)")
     if(args.ele):
         for kk in range(aF.size):
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk], aF[kk]))
             else:
-                print("%10.6f %10.6f %10.4f"%(aV[kk], aF[kk],ap[kk]))
+                print("%10.6f %10.6f %10.4f "%(aV[kk], aF[kk],ap[kk])+stress[kk])
     else:
         for kk in range(aE.size):
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk], aE[kk]))
             else:
-                print("%10.6f %10.6f %10.4f"%(aV[kk], aE[kk],ap[kk]))
+                print("%10.6f %10.6f %10.4f "%(aV[kk], aE[kk],ap[kk])+stress[kk])
 else:
     if(args.simple):
         print("V(A3/atom) E(eV/atom)")
     else:
-        print("V(A3/atom) E(eV/atom) P(kbar)")
+        print("V(A3/atom) E(eV/atom) P(kbar) Stress(kbar)")
     if(args.ele):
         for kk in range(Fp.size):
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk]/natom, Fp[kk]))
             else:
-                print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Fp[kk], ap[kk]))
+                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Fp[kk], ap[kk])+stress[kk])
     else:
         for kk in range(Ep.size):
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk]/natom, Ep[kk]))
             else:
-                print("%10.6f %10.6f %10.4f"%(aV[kk]/natom, Ep[kk], ap[kk]))
+                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Ep[kk], ap[kk])+stress[kk])
 if(args.magmom):
     print("magnetization: %s uB/cell, %10.4f uB/atom"%(Mag,float(Mag)/natom))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
