@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+#elongate crystal structure
+# input fomat : cry_elongate <filename> <x_elongation> <y_elongation> <z_elongation> 
+import sys
+
+#--------------------Crystal Elongation---------------------------------------------
+def cry_elong(file_in,elongate):
+    fin=open(file_in,'r')
+    fout=open('SPOSCAR.vasp','w+')
+    print('Elongated: ',elongate[0],'*',elongate[1],'*',elongate[2],file=fout)
+    fin.readline()
+    print(fin.readline().strip('\n'),file=fout)
+    v=[[0 for i in range(3)] for j in range(3)]
+    x=[0 for i in range(3)]
+    for i in range(3):
+        line=fin.readline().split()
+        for j in range(3): 
+            v[i][j]=float(line[j])
+            print('%14.8f'%(float(line[j])*elongate[i]),end=' ',file=fout)
+        print(' ',file=fout)
+    print(fin.readline().strip('\n'),file=fout)
+    line=fin.readline().split()
+    natom=int(0)
+    for i in range(len(line)):
+        natom+=int(line[i])
+        print('%6d'%(int(line[i])*elongate[0]*elongate[1]*elongate[2]),end=' ',file=fout)
+    print(' ',file=fout)
+    line=fin.readline().split()
+    if(line[0] != 'Direct'):
+        print('Use fractional coordinate!')
+        return 0
+    print('Direct',file=fout)
+    for i in range(natom):
+        line=fin.readline().split()
+        for j in range(3):
+            x[j]=float(line[j])
+        for k0 in range(elongate[0]):
+            for k1 in range(elongate[1]):
+                for k2 in range(elongate[2]):
+                    print('%14.8f%14.8f%14.8f'%((x[0]+k0)/elongate[0],(x[1]+k1)/elongate[1],(x[2]+k2)/elongate[2]),file=fout)
+    return 1
+    fin.close()
+    fout.close()
+#--------------------END: function-----------------------------------------------
+
+if( len(sys.argv) == 1 ):
+    print('input fomat : cry_elongate filename(Direct coordinate) x_elongation y_elongation z_elongation')
+    sys.exit()
+
+filename=sys.argv[1]
+elong=[0 for i in range(3)]
+
+for i in range(3):
+    elong[i]=int(sys.argv[2+i])
+
+cry_elong(filename,elong)

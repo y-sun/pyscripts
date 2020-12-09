@@ -77,3 +77,6 @@ generate kpoints as VASP for QE
 
 ## pe.py
 processing lmp.out
+
+## cry_elongate
+elongate crystal structure
