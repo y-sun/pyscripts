@@ -8,53 +8,97 @@ parser.add_argument("-i","--input", help="input file of QE results",action='stor
 parser.add_argument("-c","--cell", help="per cell", action='store_true')
 parser.add_argument("-s","--simple", help="EV only", action='store_true')
 parser.add_argument("-n","--notitle", help="no title", action='store_true')
+parser.add_argument("-y","--hybrid", help="hybrid functional", action='store_true')
 args = parser.parse_args()
 
 def read_QE(fin, vol0, cal_tag):
     vol='NA';press='NA';  pxx=[]; 
     tot_mag='NA'; ab_mag='NA'; ene='NA'; force='NA';
     new_tag=cal_tag
-    for line in fin:
-       if("!    total energy" in line):
-         ll=line.split()
-         ene="%.6f"%(float(ll[-2])*Ry2eV/natom) # Ry -> eV/atom
-#         print(ll[-2],Ry2eV, natom,ene)
-       elif("P=" in line):
-         ll=line.split()
-         press=float(ll[-1].strip("P=")) # kBar
-         for k in range(3):
-             ll=fin.readline().split()
-             pxx.append(ll[k+3])
-       elif("total magnetization" in line):
-         ll=line.split()
-         tot_mag=ll[3] # uB 
-       elif("absolute magnetization" in line):
-         ll=line.split()
-         ab_mag=ll[3] # uB
-       elif('Forces acting on atoms' in line):
-         tag=1
-         fin.readline()
-         for line in fin:
-             if("atom" not in line):
-                 break
+    if(args.hybrid):
+        for line in fin:
+           if("!!   total energy" in line):
              ll=line.split()
-             for k in range(6,9):
-                 if( abs(float(ll[k])*(Ry2eV/au2ang)) > 0.01):
-                     tag=0
-         if(tag==1):force="T"
-         else: force="F"
-       elif("new unit-cell volume" in line):
-           ll=line.split()
-           vol=float(ll[-3])
-       elif(("convergence has been achieved" in line) and cal_tag=="scf"):
-           #break
-           continue
-       elif(("convergence has been achieved" in line) and cal_tag=="Str_Opt"):
-           continue
-       elif("Writing output data" in line):
-           break
-       elif("End of BFGS Geometry Optimization" in line):
-           new_tag="Str_Opt_end"
+             ene="%.6f"%(float(ll[-2])*Ry2eV/natom) # Ry -> eV/atom
+    #         print(ll[-2],Ry2eV, natom,ene)
+           elif("P=" in line):
+             ll=line.split()
+             press=float(ll[-1].strip("P=")) # kBar
+             for k in range(3):
+                 ll=fin.readline().split()
+                 pxx.append(ll[k+3])
+           elif("total magnetization" in line):
+             ll=line.split()
+             tot_mag=ll[3] # uB 
+           elif("absolute magnetization" in line):
+             ll=line.split()
+             ab_mag=ll[3] # uB
+           elif('Forces acting on atoms' in line):
+             tag=1
+             fin.readline()
+             for line in fin:
+                 if("atom" not in line):
+                     break
+                 ll=line.split()
+                 for k in range(6,9):
+                     if( abs(float(ll[k])*(Ry2eV/au2ang)) > 0.01):
+                         tag=0
+             if(tag==1):force="T"
+             else: force="F"
+           elif("new unit-cell volume" in line):
+               ll=line.split()
+               vol=float(ll[-3])
+           elif(("convergence has been achieved" in line) and cal_tag=="scf"):
+               #break
+               continue
+           elif(("convergence has been achieved" in line) and cal_tag=="Str_Opt"):
+               continue
+           elif("Writing output data" in line):
+               break
+           elif("End of BFGS Geometry Optimization" in line):
+               new_tag="Str_Opt_end"
+    else:
+        for line in fin:
+           if("!    total energy" in line):
+             ll=line.split()
+             ene="%.6f"%(float(ll[-2])*Ry2eV/natom) # Ry -> eV/atom
+    #         print(ll[-2],Ry2eV, natom,ene)
+           elif("P=" in line):
+             ll=line.split()
+             press=float(ll[-1].strip("P=")) # kBar
+             for k in range(3):
+                 ll=fin.readline().split()
+                 pxx.append(ll[k+3])
+           elif("total magnetization" in line):
+             ll=line.split()
+             tot_mag=ll[3] # uB 
+           elif("absolute magnetization" in line):
+             ll=line.split()
+             ab_mag=ll[3] # uB
+           elif('Forces acting on atoms' in line):
+             tag=1
+             fin.readline()
+             for line in fin:
+                 if("atom" not in line):
+                     break
+                 ll=line.split()
+                 for k in range(6,9):
+                     if( abs(float(ll[k])*(Ry2eV/au2ang)) > 0.01):
+                         tag=0
+             if(tag==1):force="T"
+             else: force="F"
+           elif("new unit-cell volume" in line):
+               ll=line.split()
+               vol=float(ll[-3])
+           elif(("convergence has been achieved" in line) and cal_tag=="scf"):
+               #break
+               continue
+           elif(("convergence has been achieved" in line) and cal_tag=="Str_Opt"):
+               continue
+           elif("Writing output data" in line):
+               break
+           elif("End of BFGS Geometry Optimization" in line):
+               new_tag="Str_Opt_end"
     if(vol=="NA"):
         vol=vol0
     return new_tag, vol, ene, press, pxx, tot_mag, ab_mag, force
