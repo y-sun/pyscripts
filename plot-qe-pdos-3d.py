@@ -63,6 +63,7 @@ plt.ylabel(r"ProjDOS")
 plt.title("M= "+mag+r" $\mu_B$")
 plt.tight_layout()
 plt.savefig("pdos.png")
+plt.show()
 plt.close()
 
 if(args.output):
@@ -128,5 +129,5 @@ if (args.degenerate):
     plt.ylabel(r"ProjDOS")
     plt.tight_layout()
     plt.savefig("3d.png")
+    plt.show()
     plt.close()
-
