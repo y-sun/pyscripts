@@ -20,18 +20,25 @@ args = parser.parse_args()
 fscf=open(args.scf,"r")
 for line in fscf:
     if("the Fermi energy is" in line):
-        Ef=float(line.split()[-2])
+        Efu=float(line.split()[-2])
+        Efd=Efu
     if("highest occupied level " in line):
-        Ef=float(line.split()[-1])
+        Efu=float(line.split()[-1])
+        Efd=Efu
     if("highest occupied," in line):
-        Ef=float(line.split()[-2])
+        Efu=float(line.split()[-2])
+        Efd=Efu
+    if("the spin up/dw Fermi energies" in line):
+        ll=line.split()
+        Efu=float(ll[-3]); Efd=float(ll[-2])
     if("total magnetization" in line):
         mag=line.split()[-3]
 fscf.close()
 
 # fe pdos
 data=np.loadtxt(args.pdos,skiprows=1)
-E=data[:,0]-Ef
+Eu=data[:,0]-Efu
+Ed=data[:,0]-Efd
 if(args.transform):
     t2g_up=data[:,5]+data[:,7]+data[:,9] # 5 zx, 7 zy, 9 xy
     t2g_dn=data[:,6]+data[:,8]+data[:,10]
@@ -46,10 +53,10 @@ else:
 plt.figure(figsize=(8,3.3))
 plt.rcParams.update({'font.size': 14})
 plt.axhline(0,ls='--',color='k',lw=0.5)
-plt.plot(E, t2g_up,label=r"$t_{2g}$",c='r')
-plt.plot(E,-t2g_dn,c='r')
-plt.plot(E, eg_up,label=r"$e_{g}$",c='b')
-plt.plot(E,-eg_dn,c='b')
+plt.plot(Eu, t2g_up,label=r"$t_{2g}$",c='r')
+plt.plot(Ed,-t2g_dn,c='r')
+plt.plot(Eu, eg_up,label=r"$e_{g}$",c='b')
+plt.plot(Ed,-eg_dn,c='b')
 plt.axvline(0,ls='--',color='k',lw=0.5)
 plt.legend()
 if(args.xlim is None):
@@ -68,16 +75,16 @@ plt.close()
 
 if(args.output):
     fout=open("pdos.t2g_eg.dat","w+")
-    print("E-Ef(eV) t2g_up t2g_dn eg_up eg_dn",file=fout)
-    for k in range(E.size):
-        print(E[k],t2g_up[k],t2g_dn[k],eg_up[k],eg_dn[k],file=fout)
+    print("E-Ef_up(eV) E-Ef_dn(eV) t2g_up t2g_dn eg_up eg_dn",file=fout)
+    for k in range(Eu.size):
+        print(Eu[k],Ed[k],t2g_up[k],-t2g_dn[k],eg_up[k],-eg_dn[k],file=fout)
     fout.close()
 
     fout=open("pdos.d_orbitals.dat","w+")
-    print("E-Ef(eV) z2_up z2_dn x2-y2_up x2-y2_dn zx_up zx_dn zy_up zy_dn xy_up xy_dn",file=fout)
-    for k in range(E.size):
-        print(E[k],data[k,3],data[k,4],data[k,9],data[k,10],
-                data[k,5],data[k,6],data[k,7],data[k,8],data[k,11],data[k,12],file=fout)
+    print("E-Ef_up(eV) E-Ef_dn(eV) z2_up z2_dn x2-y2_up x2-y2_dn zx_up zx_dn zy_up zy_dn xy_up xy_dn",file=fout)
+    for k in range(Eu.size):
+        print(Eu[k],Ed[k],data[k,3],-data[k,4],data[k,9],-data[k,10],
+                data[k,5],-data[k,6],data[k,7],-data[k,8],data[k,11],-data[k,12],file=fout)
     fout.close()
 
 
@@ -87,14 +94,14 @@ if (args.degenerate):
     plt.subplot(2,1,1)
     plt.axhline(0,ls='--',color='k',lw=0.5)
     plt.axvline(0,ls='--',color='k',lw=0.5)
-    plt.plot(E, data[:,3] ,label=r"$z^2$",c='b')
-    plt.plot(E,-data[:,4] ,c='b')
+    plt.plot(Eu, data[:,3] ,label=r"$z^2$",c='b')
+    plt.plot(Ed,-data[:,4] ,c='b')
     if(args.transform):
-        plt.plot(E, data[:,11] ,ls='--',label=r"$x^2-y^2$",c='r')
-        plt.plot(E,-data[:,12],ls='--',c='r')
+        plt.plot(Eu, data[:,11] ,ls='--',label=r"$x^2-y^2$",c='r')
+        plt.plot(Ed,-data[:,12],ls='--',c='r')
     else: 
-        plt.plot(E, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
-        plt.plot(E,-data[:,10],ls='--',c='r')
+        plt.plot(Eu, data[:,9] ,ls='--',label=r"$x^2-y^2$",c='r')
+        plt.plot(Ed,-data[:,10],ls='--',c='r')
     plt.legend()
     if(args.xlim is None):
         plt.xlim(-12,5)
@@ -108,16 +115,16 @@ if (args.degenerate):
     plt.subplot(2,1,2)
     plt.axhline(0,ls='--',color='k',lw=0.5)
     plt.axvline(0,ls='--',color='k',lw=0.5)
-    plt.plot(E, data[:,5] ,marker='x',label=r"$zx$",c='b')
-    plt.plot(E,-data[:,6] ,marker='x',c='b')
-    plt.plot(E, data[:,7] ,label=r"$zy$",c='g')
-    plt.plot(E,-data[:,8] ,c='g')
+    plt.plot(Eu, data[:,5] ,marker='x',label=r"$zx$",c='b')
+    plt.plot(Ed,-data[:,6] ,marker='x',c='b')
+    plt.plot(Eu, data[:,7] ,label=r"$zy$",c='g')
+    plt.plot(Ed,-data[:,8] ,c='g')
     if(args.transform):
-        plt.plot(E, data[:,9] ,ls='--',label=r"$xy$",c='r')
-        plt.plot(E,-data[:,10] ,ls='--',c='r')
+        plt.plot(Eu, data[:,9] ,ls='--',label=r"$xy$",c='r')
+        plt.plot(Ed,-data[:,10] ,ls='--',c='r')
     else:
-        plt.plot(E, data[:,11] ,ls='--',label=r"$xy$",c='r')
-        plt.plot(E,-data[:,12] ,ls='--',c='r')
+        plt.plot(Eu, data[:,11] ,ls='--',label=r"$xy$",c='r')
+        plt.plot(Ed,-data[:,12] ,ls='--',c='r')
     plt.legend()
     if(args.xlim is None):
         plt.xlim(-12,5)
