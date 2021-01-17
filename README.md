@@ -80,3 +80,6 @@ processing lmp.out
 
 ## cry_elongate
 elongate crystal structure
+
+## phoband4plot.py
+transform phonopy band data for plot-qedfpt-disp.py 
