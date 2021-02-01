@@ -4,7 +4,7 @@ import glob
 import shutil
 from subprocess import Popen, PIPE
 
-files=glob.glob("dyn*")
+files=sorted(glob.glob("dyn*"))
 
 count=1
 Qp=[]; mesh=''
