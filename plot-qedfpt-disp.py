@@ -13,6 +13,7 @@ parser.add_argument("-y","--ylim", help="yrange", nargs='*',action='store')
 parser.add_argument("-n","--number", help="number of spacing",action='store')
 parser.add_argument("-t","--title", help="plot title",action='store')
 parser.add_argument("-r","--rainbow", help="rainbow as color", action='store_true')
+parser.add_argument("-m","--match", help="match with the first coordinate", action='store_true')
 args = parser.parse_args()
 
 #nspacing=50; kpoints=['G','X','W','K','G','L']
@@ -46,13 +47,24 @@ ct=0
 for ifl in fls:
     name=ifl.split("/")[0]
     data=np.loadtxt(ifl)
-    for k in range(1,data.shape[1]):
-        if(k==1):
-            plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct],label=names[ct])
-        else:
-            plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct])
+    if(ct==0 and args.match):
+        xm=data[:,0]
+
+    if(args.match):
+        for k in range(1,data.shape[1]):
+            if(k==1):
+                plt.plot(xm,data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct],label=names[ct])
+            else:
+                plt.plot(xm,data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct])
+    else:
+        for k in range(1,data.shape[1]):
+            if(k==1):
+                plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct],label=names[ct])
+            else:
+                plt.plot(data[:,0],data[:,k]*0.02998,linestyle=lshp[ct],color=colors[ct])
     ct+=1
 
+data=np.loadtxt(fls[0])
 ndata=data.shape[0]
 nv=int((ndata-1)/nspacing+0.5)
 vx=[data[k*nspacing][0] for k in range(1,nv)]

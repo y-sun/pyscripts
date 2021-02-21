@@ -41,8 +41,8 @@ for ifl in fls:
     plt.plot(data[:,0],data[:,1],linestyle=lshp[ct],color=colors[ct],label=names[ct])
     ct+=1
 
-if(len(fls) > 4):
-    plt.legend(ncol=2,prop={'size': 12}) #bbox_to_anchor=(1, .95))
+if(len(fls) > 8):
+    plt.legend(ncol=2) #,prop={'size': 12}) #bbox_to_anchor=(1, .95))
 else:
     plt.legend()
 if(args.title is not None): 
