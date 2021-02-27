@@ -60,12 +60,20 @@ for line in fin:
         ll=line.split()
         nelm=int(ll[2].strip(";"))
     if("magnetization (x)" in line):
+        tag=0; Mab=0 ; mab=0
         for line in fin:
             ll=line.split()
             if(len(ll)>0):
                 if(ll[0]=="tot"):
                     Mag=ll[-1] #float(ll[-1])
                     break
+                elif(tag==0 and "----" in line):
+                    tag=1
+                elif(tag==1  and "----" in line):
+                    tag=0
+                    Mab=mab
+                elif(tag==1):
+                    mab += abs(float(ll[-1]))
     #if("enthalpy is  TOTEN" in line):
     #    ll=line.split()
     #    Ep.append(float(ll[4])/natom)
@@ -112,5 +120,5 @@ else:
             else:
                 print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Ep[kk], ap[kk])+stress[kk])
 if(args.magmom):
-    print("magnetization: %s uB/cell, %10.4f uB/atom"%(Mag,float(Mag)/natom))
+    print("magnetization, mag.abs: %s uB/cell, %10.4f uB/cell"%(Mag, Mab))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
