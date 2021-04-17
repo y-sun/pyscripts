@@ -13,4 +13,4 @@ plot.add_dos_dict(element_dos)
 plot.add_dos(r'$t_{2g}$',data['t2g'])
 plot.add_dos(r'$e_{g}$',data['e_g'])
 
-plot.show(xlim=[-10, 5], ylim=[-2, 2])
+plot.show(xlim=[-10, 10], ylim=[0,10])
