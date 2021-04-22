@@ -87,7 +87,7 @@ print("B0,Bp,V0=",birch_murn[1]*160.21765, birch_murn[2], birch_murn[3])
 E_fitted=ev_BM(birch_murn,vol)
 P_fitted=pv_BM(birch_murn,vol)
 if(args.output):
-   fout=open("BM-fit.dat","w+")
+   fout=open("fitted.dat","w+")
    print("vol P_org P_fit",file=fout)
    for k in range(len(vol)):
       print(vol[k],press[k],P_fitted[k],file=fout)
