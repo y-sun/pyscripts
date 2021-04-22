@@ -11,7 +11,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input file of PV curve, first line ignore",action='store')
 parser.add_argument("-p","--prange", help="pressure range", nargs='*',action='store')
 parser.add_argument("-n","--noplot", help="no plotting", action='store_true')
+parser.add_argument("-o","--output", help="output fitting data", action='store_true')
 parser.add_argument("-f","--fix", help="fix B'", action='store')
+parser.add_argument("-t","--title", help="add title", action='store')
 
 args = parser.parse_args()
 
@@ -80,13 +82,16 @@ if(args.fix is not None):
 else:
     target = lambda params, y, x: y - pv_BM(params, x)
 birch_murn, ier = leastsq(target, x0, args=(press,vol))
-print("BM 3rd fitted by P-V")
-print("E0, B0, Bp, V0=",birch_murn[0], birch_murn[1]*160.21765, birch_murn[2], birch_murn[3])
+#print("BM 3rd fitted by P-V")
+print("B0,Bp,V0=",birch_murn[1]*160.21765, birch_murn[2], birch_murn[3])
 E_fitted=ev_BM(birch_murn,vol)
 P_fitted=pv_BM(birch_murn,vol)
-print("vol P_org P_fit")
-for k in range(len(vol)):
-    print(vol[k],press[k],P_fitted[k])
+if(args.output):
+   fout=open("BM-fit.dat","w+")
+   print("vol P_org P_fit",file=fout)
+   for k in range(len(vol)):
+      print(vol[k],press[k],P_fitted[k],file=fout)
+   fout.close()
 
 # PV
 # solve V for a specific P, or verse vise
@@ -130,12 +135,16 @@ plt.plot(vraw, pv_BM(birch_murn,vraw), label='Birch-Murnaghan 3rd')
 plt.ylabel('P (GPa)')
 plt.legend()
 
+if(args.title is not None):
+   plt.title(args.title)
+
 plt.subplot(2,1,2)
 plt.plot(vol, pv_BM(birch_murn,vol)-press, '-o')
 plt.axhline(0,ls='--',c='k')
 plt.xlabel('Volume ($\AA^3$/atom)')
 plt.ylabel('$\Delta$P (GPa)')
 
+
 plt.tight_layout()
 plt.savefig("PV-fit.png")
-plt.show()
+#plt.show()
