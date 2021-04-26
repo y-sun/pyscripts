@@ -18,6 +18,7 @@ args = parser.parse_args()
 
 #get Ef 
 fscf=open(args.scf,"r")
+mag="NA"
 for line in fscf:
     if("the Fermi energy is" in line):
         Efu=float(line.split()[-2])
@@ -67,7 +68,8 @@ if(args.ylim is not None):
     plt.ylim(float(args.ylim[0]),float(args.ylim[1]))
 plt.xlabel(r"$E-E_f\ (eV)$")
 plt.ylabel(r"ProjDOS")
-plt.title("M= "+mag+r" $\mu_B$")
+if(mag is not "NA"):
+    plt.title("M= "+mag+r" $\mu_B$")
 plt.tight_layout()
 plt.savefig("pdos.png")
 plt.show()
