@@ -14,7 +14,7 @@ for k in range(0,len(args.input)):
 ct=0
 H=[]
 for isys in all_sys:
-    fin=open(isys+".PH_fit.dat","r")
+    fin=open(isys,"r")
     P=[]; ent=[]
     fin.readline()
     for line in fin:
@@ -31,7 +31,7 @@ for iH in H:
         d_ent.append( iH[k]-H[0][k] )
     dH.append(d_ent)
 
-fout=open("P-H.dat","w+")
+fout=open("P-dH.dat","w+")
 print("P", *all_sys, file=fout)
 for k in range(len(dH[0])):
     print(P[k],end=" ",file=fout)
