@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+# transfer lammps dump file to xdatcar 
+# input fomat : lammps2poscar <filename> <atom_type_1> <atom_type_2> <atom_type_3> ...
+import sys
+sys.path.append('/home/yangsun/git/pylib')
+import MD
+
+if( len(sys.argv) == 1):
+    print('input fomat : lammps2poscar <filename> <atom_type_1> <atom_type_2> ... nevery')
+else:
+    filename=sys.argv[1]
+    leng=len(sys.argv)
+    nevery=int(sys.argv[leng-1])
+    ntype=[]
+    for i in range(1,leng-2): 
+        ntype.append(sys.argv[1+i])
+    print(*ntype, "every ", nevery)
+    MD.dump2xdat(filename,ntype,nevery)
