@@ -12,7 +12,7 @@ nsize=int(nf/n0)
 
 #d_outcar.to('deepmd/raw', 'dpmd_raw')
 d_outcar.to_deepmd_raw('deepmd')
-d_outcar.to_deepmd_npy('deepmd',set_size=n0)
+d_outcar.to_deepmd_npy('deepmd') #,set_size=n0)
 
 print("total set_size nf_per_set nf_in_last")
 print(nf, nsize,n0, nf-nsize*n0)
