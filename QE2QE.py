@@ -36,8 +36,9 @@ for line in fin:
                 else:
                     idx=ntyp.index(ll[0])
                     natom[idx]+=1
+                atoms.append(line.strip("\n"))
                 #atoms.append([ll[1],ll[2],ll[3]])
-                atoms.append("%.6f %.6f %.6f"%(float(ll[1]),float(ll[2]),float(ll[3])))
+                #atoms.append("%.6f %.6f %.6f"%(float(ll[1]),float(ll[2]),float(ll[3])))
 fin.close()
 
 fout=open("final.QE","w+")
@@ -47,10 +48,13 @@ for mm in cell:
     print(*mm, file=fout)
 print("ATOMIC_POSITIONS {crystal}",file=fout)
 ct=0
-for i in range(len(ntyp)):
-    for k in range(natom[i]):
-        print(ntyp[i], atoms[ct],  file=fout)
-        ct+=1
+for i in range(len(atoms)):
+    print(atoms[i],file=fout)
+
+#for i in range(len(ntyp)):
+#    for k in range(natom[i]):
+#        print(ntyp[i], atoms[ct],  file=fout)
+#        ct+=1
 
 fout.close()
 

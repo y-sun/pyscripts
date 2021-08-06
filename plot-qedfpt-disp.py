@@ -95,4 +95,4 @@ if(args.ylim is not None):
     plt.ylim(ymin,ymax)
 plt.tight_layout()
 plt.savefig("total-dispersion.png")
-plt.show()
+#plt.show()
