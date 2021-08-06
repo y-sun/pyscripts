@@ -49,7 +49,8 @@ for mm in cell:
 print("ATOMIC_POSITIONS {crystal}",file=fout)
 ct=0
 for i in range(len(atoms)):
-    print(atoms[i],file=fout)
+    ll=atoms[i].split()
+    print(ll[0],"%.8f %.8f %.8f"%(float(ll[1]),float(ll[2]),float(ll[3])),file=fout)
 
 #for i in range(len(ntyp)):
 #    for k in range(natom[i]):
