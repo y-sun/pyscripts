@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# for negative # of atom, check https://gitlab.com/ase/ase/-/issues/938
+
 import ase.build
 import ase.io.vasp
 import sys
