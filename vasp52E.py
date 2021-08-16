@@ -56,7 +56,7 @@ for line in fin:
     if("free  energy   TOTEN" in line):
         ll=line.split()
         F.append(float(ll[-2]))
-    if("NELM" in line and ("=" not in line)):
+    if("NELM" in line and ("=" in line)):
         ll=line.split()
         nelm=int(ll[2].strip(";"))
     if("magnetization (x)" in line):
