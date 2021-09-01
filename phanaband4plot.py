@@ -15,9 +15,9 @@ nband=data.shape[1]-4
 print(ndata, nband)
 fout=open("band.dat.gp","w+")
 for k in range(ndata):
-   print("%18.6f"%(data[k][3]/0.02998),end=" ",file=fout)  # THz to cm^-1
+   print("%18.6f"%(data[k][3]),end=" ",file=fout)  
    for i in range(nband):
-      print("%18.6f"%(data[k][4+i]),end=" ",file=fout)
+      print("%18.6f"%(data[k][4+i]/0.02998),end=" ",file=fout)  # THz to cm^-1
    print("",file=fout)
 fout.close()
 print("Transformed to band.dat.gp!")
