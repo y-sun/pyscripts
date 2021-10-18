@@ -62,8 +62,14 @@ for i in range(nmode):
 print(matcher)
 print(dev)
 
-# get lambda
+# check repeated matcher
+from collections import Counter
+repeated=[k for k,v in Counter(matcher).items() if v>1]
+if(len(repeated)!=0):
+    print("Error: repeated matcher! Check eigenvectors")
 
+
+# get lambda
 lmd=[]
 for i in range(nmode):
     scr_i=scr_f[i]
