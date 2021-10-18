@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+# transfer lammps dump file to xdatcar 
+# input fomat : lammps2poscar <filename> <atom_type_1> <atom_type_2> <atom_type_3> ...
+import sys
+import MD
+
+if( len(sys.argv) == 1):
+    print('input fomat : lammps2xdat <filename> nstep')
+else:
+    filename=sys.argv[1]
+    nstep=int(sys.argv[2])
+    MD.xdat2dump(filename,nstep)
