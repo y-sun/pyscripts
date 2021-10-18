@@ -41,8 +41,8 @@ scr_eig=np.array(scr_eig)
 unscr_f=np.array(unscr_f)
 unscr_eig=np.array(unscr_eig)
 
-print(scr_eig)
-print(unscr_eig)
+#print(scr_eig)
+#print(unscr_eig)
 
 nmode=scr_eig.shape[0]-3 # disregard last 3
 
@@ -59,8 +59,8 @@ for i in range(nmode):
     matcher[i]=sel
     dev[i]=diff
 
-print(matcher)
-print(dev)
+print("matcher:",matcher)
+#print(dev)
 
 # check repeated matcher
 from collections import Counter
