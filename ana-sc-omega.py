@@ -71,6 +71,9 @@ for i in range(nmode):
     lmd_i= ((scr_i**2-unscr_i**2)/scr_i**2)/(-2)
     lmd.append(lmd_i)
 
-print("#omega_scr oemga_unscr lmd")
+# print
+fout=open("omega.dat","w+")
+print("#omega_scr oemga_unscr lamda",file=fout)
 for i in range(nmode):
-    print(scr_f[i],unscr_f[matcher[i]],lmd[i])
+    print(scr_f[i],unscr_f[matcher[i]],lmd[i],file=fout)
+fout.close()
