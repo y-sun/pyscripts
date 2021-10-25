@@ -2,16 +2,20 @@
 
 import numpy as np
 
+natom=999
+
 # scr
 fin=open("scr/OUTCAR","r")
 scr_f=[]; scr_eig=[]
 for line in fin:
+    if("NIONS" in line):
+        natom=int(line.split()[-1])
     if("2PiTHz" in line):
         ll=line.split()
         scr_f.append(float(ll[-2]))
         fin.readline()
         eig=[]
-        for i in range(3):
+        for i in range(natom):
             ll=fin.readline().split()
             for j in range(3):
                 eig.append(np.abs(float(ll[j+3])))  
@@ -23,12 +27,14 @@ fin.close()
 fin=open("unscr/OUTCAR","r")
 unscr_f=[]; unscr_eig=[]
 for line in fin:
+    if("NIONS" in line):
+        natom=int(line.split()[-1])
     if("2PiTHz" in line):
         ll=line.split()
         unscr_f.append(float(ll[-2]))
         fin.readline()
         eig=[]
-        for i in range(3):
+        for i in range(natom):
             ll=fin.readline().split()
             for j in range(3):
                 eig.append(np.abs(float(ll[j+3])))
@@ -67,6 +73,10 @@ from collections import Counter
 repeated=[k for k,v in Counter(matcher).items() if v>1]
 if(len(repeated)!=0):
     print("Error: repeated matcher! Check eigenvectors")
+    print("Repeatd:",end=" ")
+    for ir in repeated:
+        print(ir,end=" ")
+    print("")
 
 
 # get lambda
