@@ -69,11 +69,11 @@ for line in fin:
 fin.close()
 
 # output unsorted
-fout=open("omega-no-match.dat","w+")
-print("#order scr unscr", file=fout)
-for k in range(len(scr_f)):
-    print(k,scr_f[k], unscr_f[k], file=fout)
-fout.close()
+#fout=open("omega-no-match.dat","w+")
+#print("#order scr unscr", file=fout)
+#for k in range(len(scr_f)):
+#    print(k,scr_f[k], unscr_f[k], file=fout)
+#fout.close()
 
 # remove first three
 nr=3
@@ -128,7 +128,7 @@ for i in range(nmode):
 
 
 
-print("matcher:",matcher)
+#print("matcher:",matcher)
 #print(dev)
 
 # check repeated matcher
@@ -139,6 +139,7 @@ if(len(repeated)!=0):
     print("Repeatd:",end=" ")
     for ir in repeated:
         print(ir,end=" ")
+    print("matcher:",matcher)
     print("")
 
 
@@ -152,9 +153,13 @@ for i in range(nmode):
 
 # print
 fout=open("omega.dat","w+")
-print("#omega_scr oemga_unscr lamda",file=fout)
+print("#id omega_scr oemga_unscr",file=fout)
+ntotal=nr+nmode
+k=0
 for i in range(nr):
-    print(scr_f_tra[i], unscr_f_tra[i], file=fout)
+    print(ntotal-k,scr_f_tra[i], unscr_f_tra[i], file=fout)
+    k+=1
 for i in range(nmode):
-    print(scr_f[i],unscr_f[matcher[i]],file=fout)
+    print(ntotal-k,scr_f[i],unscr_f[matcher[i]],file=fout)
+    k+=1
 fout.close()
