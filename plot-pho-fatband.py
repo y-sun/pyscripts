@@ -23,7 +23,10 @@ nband=nspacing*(nk-1)
 plt.figure(figsize=(8,6), dpi=200)
 plt.rcParams.update({'font.size': 14})
 
-colors=['r','b','g','c','m','y']
+if (natom<7):
+    colors=['r','b','g','c','m','y']
+else:
+    colors=plt.cm.rainbow(np.linspace(0,1,natom))
 
 for i in range(natom):
     fin=open("fat-band"+str(i),"r")
