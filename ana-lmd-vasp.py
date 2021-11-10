@@ -4,10 +4,21 @@ import numpy as np
 
 natom=999
 
+# atom info
+fin=open("scr/POSCAR","r")
+for k in range(5):
+    fin.readline()
+ll=fin.readline().split()
+ele=[k for k in ll]
+ll=fin.readline().split()
+pop=[int(k) for k in ll]
+fin.close()
+
 # scr
 fin=open("scr/OUTCAR","r")
 scr_f=[]; scr_eig=[]
-scr_eig_x=[]; scr_eig_y=[]; scr_eig_z=[]
+scr_eig_x=[]; scr_eig_y=[]; scr_eig_z=[]; scr_v2=[]
+
 for line in fin:
     if("NIONS" in line):
         natom=int(line.split()[-1])
@@ -15,18 +26,27 @@ for line in fin:
         ll=line.split()
         scr_f.append(float(ll[-2]))
         fin.readline()
-        eig=[]; x=[]; y=[]; z=[]
+        eig=[]; x=[]; y=[]; z=[]; v2=[]
         for i in range(natom):
             ll=fin.readline().split()
             for j in range(3):
                 eig.append(np.abs(float(ll[j+3])))
-                x.append(float(ll[3]))
-                y.append(float(ll[4]))
-                z.append(float(ll[5]))
+            x.append(float(ll[3]))
+            y.append(float(ll[4]))
+            z.append(float(ll[5]))
+            v2.append(float(ll[3])**2+float(ll[4])**2+float(ll[5])**2)
+        v2_ele=[]; ct=0
+        for i in range(len(ele)):
+            same_ele=0
+            for k in range(pop[i]):
+                same_ele+=v2[ct]
+                ct+=1
+            v2_ele.append(same_ele)
         scr_eig.append(eig)
         scr_eig_x.append(x)
         scr_eig_y.append(y)
         scr_eig_z.append(z)
+        scr_v2.append(v2_ele)
 fin.close()
 
 # unscr
@@ -45,9 +65,9 @@ for line in fin:
             ll=fin.readline().split()
             for j in range(3):
                 eig.append(np.abs(float(ll[j+3])))
-                x.append(float(ll[3]))
-                y.append(float(ll[4]))
-                z.append(float(ll[5]))
+            x.append(float(ll[3]))
+            y.append(float(ll[4]))
+            z.append(float(ll[5]))
         unscr_eig.append(eig)
         unscr_eig_x.append(x)
         unscr_eig_y.append(y)
@@ -137,13 +157,23 @@ for i in range(nmode):
 
 # print
 fout=open("omega.dat","w+")
-print("#mode_id omega_scr oemga_unscr",file=fout)
+print("#mode_id omega_scr oemga_unscr",end=" ",file=fout)
+for k in ele:
+    print(k, end=" ",file=fout)
+print("",file=fout)
+
 k=1
 for i in range(nmode):
-    print(k,scr_f[i],unscr_f[matcher[i]],file=fout)
+    print(k,scr_f[i],unscr_f[matcher[i]],end=" ",file=fout)
+    for j in range(len(ele)):
+        print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
+    print("",file=fout)
     k+=1
 for i in range(-3,0):
-    print(k,scr_f[i],unscr_f[i],file=fout)
+    print(k,scr_f[i],unscr_f[i],end=" ",file=fout)
+    for j in range(len(ele)):
+        print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
+    print("",file=fout)
     k+=1
 fout.close()
 
@@ -152,3 +182,4 @@ fout.close()
 #    print("%.2f"%(ilmd), end=" ")
 #print("")
 print("lmd_max",np.max(lmd))
+
