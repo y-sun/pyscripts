@@ -42,4 +42,4 @@ print(max(lmd_star[:-3]), sum(lmd_star[:-3]))
 
 plt.tight_layout()
 plt.savefig("lmd.png")
-plt.show()
+#plt.show()
