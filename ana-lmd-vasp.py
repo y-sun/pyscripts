@@ -132,6 +132,13 @@ for i in range(nmode):
     matcher[i]=sel
     dev[i]=diff
 
+# output unsorted
+fout=open("omega-no-match.dat","w+")
+print("#order scr unscr", file=fout)
+for k in range(len(scr_f)):
+    print(k+1,scr_f[k], unscr_f[k], file=fout)
+fout.close()
+
 #print("id matcher eig_dev")
 #for k in range(len(matcher)):
 #    print("%d %d %.2f"%(k, matcher[k], dev[k]))
@@ -143,8 +150,12 @@ if(len(repeated)!=0):
     print("Error: repeated matcher! Check eigenvectors")
     print("Repeatd:",end=" ")
     for ir in repeated:
-        print(ir,end=" ")
+        print(ir+1,end=" ")
     print("")
+
+    for k in range(len(matcher)):
+        if(k not in matcher):
+            print("remained",k+1)
 
 
 # get lambda
@@ -157,20 +168,20 @@ for i in range(nmode):
 
 # print
 fout=open("omega.dat","w+")
-print("#mode_id omega_scr oemga_unscr",end=" ",file=fout)
+print("#mode_id unscr_id omega_scr oemga_unscr",end=" ",file=fout)
 for k in ele:
     print(k, end=" ",file=fout)
 print("",file=fout)
 
 k=1
 for i in range(nmode):
-    print(k,scr_f[i],unscr_f[matcher[i]],end=" ",file=fout)
+    print(k,matcher[i]+1,scr_f[i],unscr_f[matcher[i]],end=" ",file=fout)
     for j in range(len(ele)):
         print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
     print("",file=fout)
     k+=1
 for i in range(-3,0):
-    print(k,scr_f[i],unscr_f[i],end=" ",file=fout)
+    print(k,k,scr_f[i],unscr_f[i],end=" ",file=fout)
     for j in range(len(ele)):
         print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
     print("",file=fout)
