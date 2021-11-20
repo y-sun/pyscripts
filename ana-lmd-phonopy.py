@@ -3,11 +3,20 @@
 import numpy as np
 import yaml
 
+# atom info
+fin=open("POSCAR","r")
+for k in range(5):
+    fin.readline()
+ll=fin.readline().split()
+ele=[k for k in ll]
+ll=fin.readline().split()
+pop=[int(k) for k in ll]
+fin.close()
 
 # scr
 fin=open("scr/band.yaml","r")
 scr_f=[]; 
-scr_eig_x=[]; scr_eig_y=[]; scr_eig_z=[]
+scr_eig_x=[]; scr_eig_y=[]; scr_eig_z=[]; scr_v2=[]
 for line in fin:
     if("natom:" in line):
         natom=int(line.split()[-1])
@@ -22,17 +31,32 @@ for line in fin:
         eigx=[]
         eigy=[]
         eigz=[]
+        v2=[]
         for k in range(natom):
             fin.readline()
             ll=fin.readline().split()
-            eigx.append(float(ll[2].strip(",")))
+            x=float(ll[2].strip(","))
             ll=fin.readline().split()
-            eigy.append(float(ll[2].strip(",")))
+            y=float(ll[2].strip(","))
             ll=fin.readline().split()
-            eigz.append(float(ll[2].strip(",")))
+            z=float(ll[2].strip(","))
+            
+            eigx.append(x)
+            eigy.append(y)
+            eigz.append(z)
+            v2.append(x**2+y**2+z**2)
+        v2_ele=[]; ct=0
+        for i in range(len(ele)):
+            same_ele=0
+            for k in range(pop[i]):
+                same_ele+=v2[ct]
+                ct+=1
+            v2_ele.append(same_ele)
+        
         scr_eig_x.append(eigx)
         scr_eig_y.append(eigy)
         scr_eig_z.append(eigz)
+        scr_v2.append(v2_ele)
     if("q-position" in line):
         break
 fin.close()
@@ -153,13 +177,25 @@ for i in range(nmode):
 
 # print
 fout=open("omega.dat","w+")
-print("#id omega_scr oemga_unscr",file=fout)
+print("#id unscr_id  omega_scr oemga_unscr",end=" ",file=fout)
+for k in ele:
+    print(k, end=" ",file=fout)
+print("",file=fout)
+
 ntotal=nr+nmode
 k=0
 for i in range(nr):
-    print(ntotal-k,scr_f_tra[i], unscr_f_tra[i], file=fout)
+    print(ntotal-k,ntotal-k, scr_f_tra[i], unscr_f_tra[i],end=" ", file=fout)
+    for j in range(len(ele)):
+        print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
+    print("",file=fout)
     k+=1
 for i in range(nmode):
-    print(ntotal-k,scr_f[i],unscr_f[matcher[i]],file=fout)
+    print(ntotal-k,matcher[i]+1, scr_f[i],unscr_f[matcher[i]],end=" ",file=fout)
+    for j in range(len(ele)):
+        print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
+    print("",file=fout)
     k+=1
 fout.close()
+
+print("lmd_max",np.max(lmd))
