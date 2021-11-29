@@ -22,7 +22,7 @@ plt.plot(data[:,0], data[:,3],"-o", label="unscr", color="r")
 plt.title(sys.argv[1])
 plt.legend()
 plt.tick_params(bottom='off')
-plt.xlim(-0.5, data[-1][0]+0.5)
+plt.xlim(-0.5, max(data[:,0]+0.5))
 plt.ylabel("$\omega$ (meV)")
 
 plt.subplot(3,1,2)
