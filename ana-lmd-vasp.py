@@ -192,5 +192,9 @@ fout.close()
 #for ilmd in lmd:
 #    print("%.2f"%(ilmd), end=" ")
 #print("")
-print("lmd_max",np.max(lmd))
+#print("lmd_max",np.max(lmd))
 
+if(scr_f[-1] > 1.0):
+    print("Img Phonon!")
+else:
+    print("lmd_max",np.max(lmd))
