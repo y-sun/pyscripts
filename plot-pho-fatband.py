@@ -5,20 +5,21 @@ import argparse
 import pylab as plt
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-a","--atoms", help="atoms index", nargs='*', action='store')
+parser.add_argument("-a","--atoms", help="element/atom index", nargs='*', action='store')
 parser.add_argument("-k","--kp", help="k points", nargs='*', action='store')
 parser.add_argument("-s","--spacing", help="spacing, same to band.conf",action='store')
 parser.add_argument("-t","--title", help="plot title",action='store')
+parser.add_argument("-n","--nband", help="number of bands",action='store')
 args = parser.parse_args()
 
 atoms=args.atoms
 natom=len(atoms)
 kpoints=args.kp
 nk=len(kpoints)
+nbnds=int(args.nband)
 nspacing=int(args.spacing)
 
 nband=nspacing*(nk-1)
-
 
 plt.figure(figsize=(8,6), dpi=200)
 plt.rcParams.update({'font.size': 14})
@@ -30,7 +31,7 @@ else:
 
 for i in range(natom):
     fin=open("fat-band"+str(i),"r")
-    for k in range(natom*3):
+    for k in range(nbnds):
         xk=[]; yf=[]; cont=[]
         for ik in range(nk-1):
             for j in range(nspacing):
@@ -44,10 +45,10 @@ for i in range(natom):
         if(i==0):
             plt.plot(xk,yf,linestyle='-',color='k')
         if(k==0):
-            plt.scatter(xk,yf,s=cont,color=colors[i], linewidths=0 ,alpha=0.2,label=atoms[i])
+            plt.scatter(xk,yf,s=cont,color=colors[i], linewidths=0 ,alpha=0.1,label=atoms[i])
             #plt.scatter(xk,yf,s=cont,facecolors='none', edgecolors=colors[i], linewidths=0.4, label=atoms[i])
         else:
-            plt.scatter(xk,yf,s=cont,color=colors[i], linewidths=0 ,alpha=0.2)
+            plt.scatter(xk,yf,s=cont,color=colors[i], linewidths=0 ,alpha=0.1)
             #plt.scatter(xk,yf,s=cont,facecolors='none', edgecolors=colors[i], linewidths=0.4)
     fin.close()
 
