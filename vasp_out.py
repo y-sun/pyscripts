@@ -21,13 +21,6 @@ for line in fin:
     #if("external pressure " in line):
     #   ll=line.split()
     #   press.append(float(ll[3]))
-    if("in kB" in line):
-        ll=line.split()
-        stress.append(ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6]+" "+ll[7])
-        try:
-            press.append((float(ll[2])+float(ll[3])+float(ll[4]))/3)
-        except:
-            press.append(-99999)
     if(("volume of cell" in line) and vtag==0):
         vtag = 1
     elif(("volume of cell" in line) and vtag==1):
