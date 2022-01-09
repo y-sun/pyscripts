@@ -21,20 +21,6 @@ for line in fin:
     #if("external pressure " in line):
     #   ll=line.split()
     #   press.append(float(ll[3]))
-    if(("volume of cell" in line) and vtag==0):
-        vtag = 1
-    elif(("volume of cell" in line) and vtag==1):
-        vol_vasp=float(line.split()[4])
-        fin.readline()
-        vec=[]
-        for k in range(3):
-            ll=fin.readline().split()
-            fl=[float(ll[s]) for s in range(3) ]
-            vec.append(fl)
-        vec=np.array(vec)
-        vol=np.dot(np.cross(vec[0],vec[1]),vec[2])
-        if(abs(vol-vol_vasp)>0.1): print("wrong volume!")
-        V.append(vol)
     if("NIONS" in line):
         ll=line.split()
         natom=int(ll[len(ll)-1])
