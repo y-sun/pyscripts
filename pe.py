@@ -7,6 +7,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input lammps out file",action='store')
+parser.add_argument("-t","--title", help="title",action='store')
 parser.add_argument("-e","--every", help="output data every this step",action='store')
 parser.add_argument("-j","--jump", help="jump this steps", action='store')
 parser.add_argument("-p","--plot", help="plot", action='store_true')
@@ -128,11 +129,12 @@ print("# of steps:",len(Ep))
 if(args.plot):
    fig1=plt.figure( figsize=(8,6) )
    plt.plot(time,Ep_kbt)
-   plt.xlabel('time (ns)', fontsize=24)
-   plt.ylabel('Ep-3/2*kB*T (ev/atom)', fontsize=24)
-   plt.xticks(fontsize=22)
-   plt.yticks(fontsize=22)
-   plt.title(args.input,fontsize=22)
+   plt.xlabel('time (ns)', fontsize=20)
+   plt.ylabel('Ep-3/2*kB*T (ev/atom)', fontsize=20)
+   plt.xticks(fontsize=18)
+   plt.yticks(fontsize=18)
+   if(args.title is not None):
+      plt.title(args.title,fontsize=22)
    current_plt=plt.gca()
    current_plt.get_yaxis().get_major_formatter().set_useOffset(False)
    plt.tight_layout()
@@ -140,11 +142,12 @@ if(args.plot):
    
    fig666=plt.figure( figsize=(8,6) )
    plt.plot(time,Ep_a)
-   plt.xlabel('time (ns)', fontsize=24)
-   plt.ylabel('Ep (ev/atom)', fontsize=24)
-   plt.xticks(fontsize=22)
-   plt.yticks(fontsize=22)
-   plt.title(args.input,fontsize=22)
+   plt.xlabel('time (ns)', fontsize=20)
+   plt.ylabel('Ep (ev/atom)', fontsize=20)
+   plt.xticks(fontsize=18)
+   plt.yticks(fontsize=18)
+   if(args.title is not None):
+      plt.title(args.title,fontsize=22)
    current_plt=plt.gca()
    current_plt.get_yaxis().get_major_formatter().set_useOffset(False)
    plt.tight_layout()
@@ -198,10 +201,15 @@ if(args.plot):
    
    #pressure
    if( len(press) != 0 ):
-      fig3=plt.figure()
+      fig3=plt.figure(figsize=(8,6))
       for i in range(len(press)):
-         press[i]=float(press[i])
+         press[i]=float(press[i])*0.001*0.1 #GPa
       plt.plot(time,press,'.')
+      plt.xlabel('time (ns)', fontsize=20)
+      plt.ylabel('P (GPa)', fontsize=20)
+      plt.xticks(fontsize=18)
+      plt.yticks(fontsize=18)
+      plt.tight_layout()
       plt.savefig('pressure.png')
    
    if( len(Pxx) != 0 ):
