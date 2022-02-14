@@ -96,10 +96,6 @@ atoms=fin.readline().split()
 fin.close()
 
 Ptar=float(args.target)
-print(Ep[-1])
-print(Ptar)
-print(press[-1])
-print(V[-1])
 Htar = Ep[-1] +  (Ptar)*V[-1]*0.1*1E9*1E-30/J2eV/natom
 
 print("%10.6f"%(Htar), end=" ")
