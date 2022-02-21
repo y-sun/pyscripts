@@ -23,13 +23,23 @@ for line in fin:
     #if("external pressure " in line):
     #   ll=line.split()
     #   press.append(float(ll[3]))
-    if("in kB" in line):
-        ll=line.split()
-        stress.append(ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6]+" "+ll[7])
-        try:
-            press.append((float(ll[2])+float(ll[3])+float(ll[4]))/3)
-        except:
-            press.append(-99999)
+    if("Total+kin" in line):
+       ll=line.split()
+       stress.append(ll[1]+" "+ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6])
+       px=float(ll[1]); py=float(ll[2]); pz=float(ll[3])
+       pp = (px+py+pz)/3
+       try:
+           press.append(pp)
+       except:
+           press.append(-99999)
+
+#    if("in kB" in line):
+#        ll=line.split()
+#        stress.append(ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6]+" "+ll[7])
+#        try:
+#            press.append((float(ll[2])+float(ll[3])+float(ll[4]))/3)
+#        except:
+#            press.append(-99999)
     if(("volume of cell" in line) and vtag!=2):
         vtag += 1
     elif(("volume of cell" in line) and vtag==2):
@@ -120,7 +130,7 @@ else:
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk]/natom, Ep[kk]))
             else:
-                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Ep[kk], ap[kk])+stress[kk])
+                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Fp[kk], ap[kk])+stress[kk])
 if(args.magmom):
     print("magnetization, mag.abs: %s uB/cell, %10.4f uB/cell"%(Mag, Mab))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
