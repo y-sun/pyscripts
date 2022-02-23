@@ -119,11 +119,13 @@ if(len(vol)!=0):
 Esum=0
 for eee in Ep_a:
    Esum += eee
-print("Ep_total:", Esum/len(Ep_a))
+print("Ep_ave:", Esum/len(Ep_a))
 Hsum=0
 for hhh in Etp:
    Hsum += float(hhh)
-print("Enthalpy_ave:", Hsum/len(Etp)/natom)
+
+if(len(Etp)!=0):
+   print("Enthalpy_ave:", Hsum/len(Etp)/natom)
 print("# of steps:",len(Ep))
 
 if(args.plot):
