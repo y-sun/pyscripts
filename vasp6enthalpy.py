@@ -56,11 +56,13 @@ for ifile in files:
     Ep=(aE + ap*aV*0.1*1E9*1E-30/J2eV)/natom
     if(len(Ep)>=1 and len(sys.argv)==2):
        print("#",ifile,ifile.strip(prefix))
+       print("V H P")
        for kk in range(len(Ep)):
           print("%4d %10.6f %10.6f %8.2f"%(kk+1,aV[kk]/natom, Ep[kk], press[kk]))
     elif(len(sys.argv)>2):
        Ptar=float(sys.argv[2])
        Htar = Ep[-1] + (Ptar-press[-1])*V[-1]*0.1*1E9*1E-30/J2eV/natom
+       print("H P H_tar")
        print("#",ifile,ifile.strip(prefix),Ep[-1],press[-1], Htar)
     else:
        print("#",ifile,ifile.strip(prefix),*Ep,*press)
