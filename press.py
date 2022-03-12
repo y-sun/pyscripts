@@ -24,9 +24,13 @@ for line in fin:
       pa += (px+py+pz)/3
       ct += 1
       E=999999
+      #for line in fin:
+      #    if("entropy=" in line):
+      #        E=float(line.split()[3])
+      #        break
       for line in fin:
-          if("entropy=" in line):
-              E=float(line.split()[3])
+          if("free  energy   TOTEN  =" in line):
+              E=float(line.split()[-2])
               break
       print(ct,"%.3f"%((px+py+pz)/3*0.1), "%.3f"%((px+py+pz)/3), E)
       pxx.append(px*0.1); pyy.append(py*0.1); pzz.append(pz*0.1)
