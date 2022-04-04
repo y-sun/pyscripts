@@ -198,4 +198,4 @@ for i in range(nmode):
     k+=1
 fout.close()
 
-print("lmd_max",np.max(lmd))
+print("lmd_max/lmd_sum",np.max(lmd),np.sum(lmd))
