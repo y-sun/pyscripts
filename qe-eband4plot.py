@@ -8,11 +8,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f","--file", help="band.dat file", action='store')
 parser.add_argument("-n","--nk", help="number of kpoints, sum of k-path + 1",action='store')
 parser.add_argument("-e","--fermi", help="fermi level",action='store')
+parser.add_argument("-p","--prefactor", help="a prefactor for unit conversion",action='store')
 args = parser.parse_args()
 
 fin=open(args.file,"r")
 nk=int(args.nk)
 Ef=float(args.fermi)
+factor=float(args.prefactor)
 
 tot_line=len(fin.readlines())
 fin.seek(0)
@@ -27,7 +29,7 @@ for n in range(nband):
    for k in range(nk):
       ll=fin.readline().split()
       kx.append(float(ll[0]))
-      ky.append(float(ll[1])-Ef)   # eV
+      ky.append((float(ll[1])-Ef)*factor)   # eV
    fin.readline()
    x.append(kx); y.append(ky)
 fin.close()
