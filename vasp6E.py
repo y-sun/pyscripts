@@ -23,10 +23,10 @@ for line in fin:
     #if("external pressure " in line):
     #   ll=line.split()
     #   press.append(float(ll[3]))
-    if("Total+kin" in line):
+    if("in kB" in line):
        ll=line.split()
-       stress.append(ll[1]+" "+ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6])
-       px=float(ll[1]); py=float(ll[2]); pz=float(ll[3])
+       stress.append(ll[2]+" "+ll[3]+" "+ll[4]+" "+ll[5]+" "+ll[6]+" "+ll[7])
+       px=float(ll[2]); py=float(ll[3]); pz=float(ll[4])
        pp = (px+py+pz)/3
        try:
            press.append(pp)

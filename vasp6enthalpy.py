@@ -38,9 +38,13 @@ for ifile in files:
         if("NIONS" in line):
             ll=line.split()
             natom=int(ll[len(ll)-1])
-        if("energy  without entropy=" in line):
-            ll=line.split()
-            E.append(float(ll[-1]))
+       # if("energy  without entropy=" in line):
+       #     ll=line.split()
+       #     E.append(float(ll[-1]))
+        if("FREE ENERGIE" in line):
+            fin.readline()
+            ll=fin.readline().split()
+            E.append(float(ll[-2]))
             #E.append(float(ll[3]))
        # if("NELM" in line):
        #     ll=line.split()
@@ -59,6 +63,7 @@ for ifile in files:
        print("V H P")
        for kk in range(len(Ep)):
           print("%4d %10.6f %10.6f %8.2f"%(kk+1,aV[kk]/natom, Ep[kk], press[kk]))
+
     elif(len(sys.argv)>2):
        Ptar=float(sys.argv[2])
        Htar = Ep[-1] + (Ptar-press[-1])*V[-1]*0.1*1E9*1E-30/J2eV/natom
@@ -66,3 +71,4 @@ for ifile in files:
        print("#",ifile,ifile.strip(prefix),Ep[-1],press[-1], Htar)
     else:
        print("#",ifile,ifile.strip(prefix),*Ep,*press)
+    print("note using FREE ENERGY!")
