@@ -51,6 +51,8 @@ for line in fin:
                     Mab=mab
                 elif(tag==1):
                     mab += abs(float(ll[-1]))
+            elif(len(ll)==0):
+                break
     #if("enthalpy is  TOTEN" in line):
     #    ll=line.split()
     #    Ep.append(float(ll[4])/natom)
