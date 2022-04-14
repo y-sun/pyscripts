@@ -130,7 +130,7 @@ else:
             if(args.simple):
                 print("%10.6f %10.6f"%(aV[kk]/natom, Ep[kk]))
             else:
-                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Fp[kk], ap[kk])+stress[kk])
+                print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Ep[kk], ap[kk])+stress[kk])
 if(args.magmom):
     print("magnetization, mag.abs: %s uB/cell, %10.4f uB/cell"%(Mag, Mab))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
