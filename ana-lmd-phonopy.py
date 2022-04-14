@@ -2,6 +2,11 @@
 
 import numpy as np
 import yaml
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-r","--remove", help="remove first N frequency (default=3)", action='store')
+args = parser.parse_args()
 
 # atom info
 fin=open("POSCAR","r")
@@ -101,6 +106,8 @@ fin.close()
 
 # remove first three
 nr=3
+if (args.remove is not None):
+    nr=int(args.remove)
 
 # transform
 scr_f_tra=np.array(scr_f[:nr])
@@ -184,18 +191,27 @@ print("",file=fout)
 
 ntotal=nr+nmode
 k=0
+tag_img=0
 for i in range(nr):
     print(ntotal-k,ntotal-k, scr_f_tra[i], unscr_f_tra[i],end=" ", file=fout)
+    if(scr_f_tra[i]<-1.0):
+        tag_img=1
     for j in range(len(ele)):
         print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
     print("",file=fout)
     k+=1
 for i in range(nmode):
     print(ntotal-k,matcher[i]+1, scr_f[i],unscr_f[matcher[i]],end=" ",file=fout)
+    if(scr_f[i]<-1.0):
+        tag_img=1
     for j in range(len(ele)):
         print("%6.3f"%(scr_v2[i][j]),end=" ",file=fout)
     print("",file=fout)
     k+=1
 fout.close()
 
-print("lmd_max/lmd_sum",np.max(lmd),np.sum(lmd))
+print("lmd_max/lmd_sum",np.max(lmd),np.sum(lmd),end='')
+if(tag_img==1):
+    print("  Check:strong imaginary phonon!")
+else:
+    print("")
