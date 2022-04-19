@@ -21,7 +21,7 @@ for i in range(nfile):
     data=np.loadtxt(args.files[i],skiprows=1)
     plt.plot(data[:,0],data[:,-1],label=args.files[i].split('.')[0])
 plt.axvline(0.0,ls='--',c='k')
-plt.legend()
+plt.legend(loc='upper right',fontsize=14)
 
 if(args.xlim is not None):
     plt.xlim(float(args.xlim[0]), float(args.xlim[1]))
