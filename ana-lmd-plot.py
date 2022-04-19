@@ -30,6 +30,7 @@ plt.subplot(3,1,2)
 plt.plot(data[3:,0], lmd_star[3:],"-o", color="k")
 plt.xlim(-0.5, max(data[:,0]+1.5))
 plt.ylim(-0.05, max(1.05,max(lmd_star[:-3])))
+plt.ylim(-0.05, 1.5) #max(1.05,max(lmd_star[:-3])))
 plt.ylabel("$\lambda^{*}$")
 
 plt.subplot(3,1,3)
