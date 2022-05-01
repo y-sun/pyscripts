@@ -7,7 +7,7 @@ import argparse
 from matplotlib import gridspec
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-b","--band", help="REFORMATTED_BAND file", action='store')
+parser.add_argument("-b","--band", help="REFORMATTED_BAND file", nargs='*', action='store')
 parser.add_argument("-p","--pdos", help="PDOS files", nargs='*',action='store')
 parser.add_argument("-k","--klab", help="KLABELS file", action='store')
 parser.add_argument("-t","--title", help="plot title",action='store')
@@ -30,11 +30,14 @@ else:
 # band dispersion
 ax0=plt.subplot(gs[0])
 
-data=np.loadtxt(args.band,skiprows=1)
-nband=data.shape[1]-1
+colors=['b','r']
+shape=['-','--']
+for j in range(len(args.band)):
+    data=np.loadtxt(args.band[j],skiprows=1)
+    nband=data.shape[1]-1
+    for k in range(nband):
+        ax0.plot(data[:,0],data[:,k+1]-Ef,c=colors[j],ls=shape[j])
 
-for k in range(nband):
-    ax0.plot(data[:,0],data[:,k+1]-Ef,c='b')
 fin=open(args.klab,'r')
 fin.readline()
 k_name=[]
