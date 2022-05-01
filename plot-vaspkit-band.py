@@ -6,7 +6,7 @@ import pylab as plt
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-b","--band", help="REFORMATTED_BAND file", action='store')
+parser.add_argument("-b","--band", help="REFORMATTED_BAND file", nargs='*', action='store')
 parser.add_argument("-k","--klab", help="KLABELS file", action='store')
 parser.add_argument("-t","--title", help="plot title",action='store')
 parser.add_argument("-e","--energy", help="fermi energy (0 for vaspkit)",action='store')
@@ -23,11 +23,13 @@ if (args.energy is not None):
 else:
     Ef=0
 
-data=np.loadtxt(args.band,skiprows=1)
-nband=data.shape[1]-1
+colors=['b','r']
 
-for k in range(nband):
-    plt.plot(data[:,0],data[:,k+1]-Ef,c='b')
+for j in range(len(args.band)):
+    data=np.loadtxt(args.band[j],skiprows=1)
+    nband=data.shape[1]-1
+    for k in range(nband):
+        plt.plot(data[:,0],data[:,k+1]-Ef,c=colors[j])
 
 fin=open(args.klab,'r')
 fin.readline()
