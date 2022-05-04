@@ -23,7 +23,7 @@ if (args.energy is not None):
 else:
     Ef=0
 
-colors=['b','r']
+colors=['b','r','k']
 
 for j in range(len(args.band)):
     data=np.loadtxt(args.band[j],skiprows=1)
