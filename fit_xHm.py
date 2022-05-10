@@ -35,7 +35,7 @@ plt.rcParams.update({'font.size': 16})
 
 craw = np.linspace(0,1,100)
 plt.plot(c, Hm, 'ro', label='raw')
-plt.plot(craw, Hm_model(fitted[0],craw), label='$H_m=bc(1-c)$')
+plt.plot(craw, Hm_model(fitted[0],craw), label='$H_m=bc(1-c)$, b=%.2f'%(fitted[0]))
 plt.xlabel('$c$')
 plt.ylabel('$H_m$ (eV/atom)')
 plt.legend()
