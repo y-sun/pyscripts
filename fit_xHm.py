@@ -47,5 +47,4 @@ plt.savefig('xH.png')
 if (args.show):
    plt.show()
 
-print('#b')
-print(fitted[0])
+print('b=',fitted[0])
