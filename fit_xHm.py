@@ -59,5 +59,4 @@ plt.savefig('xH.png')
 if (args.show):
    plt.show()
 
-print('b=',fitted1[0])
-print('b,z=',fitted2[0],fitted2[1])
+print('b1,b2,z2=',fitted1[0],fitted2[0],fitted2[1])
