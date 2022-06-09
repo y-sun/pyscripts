@@ -73,5 +73,5 @@ if(args.title is not None):
 
 plt.legend()
 plt.tight_layout()
-plt.savefig('flatband.png')
+plt.savefig('fatband.png')
 plt.show()
