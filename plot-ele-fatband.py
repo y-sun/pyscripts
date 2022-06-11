@@ -47,7 +47,7 @@ for sid in states:
    i+=1
 
 # labels
-plt.ylabel(r"Frequency (THz)")
+plt.ylabel(r"$E-E_f$ (eV)")
 
 vx=[]
 for k in range(1,nk-1):
