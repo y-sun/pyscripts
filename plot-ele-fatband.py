@@ -51,7 +51,8 @@ plt.ylabel(r"$E-E_f$ (eV)")
 
 vx=[]
 for k in range(1,nk-1):
-    vx.append(data[k*nspacing*nbnds-k,1])
+    #vx.append(data[k*nspacing*nbnds-k*nbnds,1])
+    vx.append(data[k*nspacing*nbnds,1])
 
 
 for iv in vx:
