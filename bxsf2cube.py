@@ -10,7 +10,7 @@ for line in fin:
       Ef=line.split()[-1]
    if("BANDGRID_3D_BANDS" in line):
       break
-
+print(f"Ef: {Ef}")
 heads=['CUBE file',
       f'Ef: {Ef}']
 nbnd=int(fin.readline().split()[0])
