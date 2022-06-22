@@ -37,8 +37,12 @@ for ik in range(nkpts):
       kb.append(float(ll[1]))
    fin.readline()
    up_bands.append(kb)
-for k in range(2):
-   fin.readline()
+
+for line in fin:
+   if("spin component" in line):
+      fin.readline()
+      break
+
 dn_bands=[]
 for ik in range(nkpts):
    kb=[]
