@@ -73,7 +73,7 @@ for i in range(nkpts):
 fout.close()
 
 
-print('total abs. diff:  %.2f'%(np.sum(np.abs(diff))))
+print('max abs. diff:  %.2f'%(np.max(np.abs(diff))))
 
 if(args.plot):
    import numpy as np
