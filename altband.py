@@ -73,7 +73,7 @@ for i in range(nkpts):
 fout.close()
 
 
-print('max abs. diff:  %.2f'%(np.max(np.abs(diff))))
+print('Smax:  %.2f'%(np.max(np.abs(diff))))
 
 if(args.plot):
    import numpy as np
