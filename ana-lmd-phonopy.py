@@ -210,8 +210,14 @@ for i in range(nmode):
     k+=1
 fout.close()
 
-print("lmd_max/lmd_sum",np.max(lmd),np.sum(lmd),end='')
+fout=open("lmd",'w+')
+print("lmd_max lmd_sum",np.max(lmd),np.sum(lmd),end='')
+print("lmd_max lmd_sum",file=fout)
+print(np.max(lmd),np.sum(lmd),end='',file=fout)
 if(tag_img==1):
     print("  Check:strong imaginary phonon!")
+    print("  Check:strong imaginary phonon!",file=fout)
 else:
     print("")
+    print("",file=fout)
+fout.close()
