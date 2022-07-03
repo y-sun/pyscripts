@@ -179,7 +179,7 @@ lmd=[]
 for i in range(nmode):
     scr_i=scr_f[i]
     unscr_i=unscr_f[matcher[i]]
-    lmd_i= ((scr_i**2-unscr_i**2)/scr_i**2)/(-2)
+    lmd_i= ((scr_i**2-unscr_i**2)/scr_i**2)/(-4)
     lmd.append(lmd_i)
 
 # print
