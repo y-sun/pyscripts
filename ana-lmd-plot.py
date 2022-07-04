@@ -9,7 +9,7 @@ ll=fin.readline().split()
 elem=[ll[k] for k in range(4,len(ll))]
 
 diff=-(data[:,2]**2-data[:,3]**2)
-deon=2*data[:,2]**2
+deon=4*data[:,2]**2
 lmd_star=diff/deon
 
 import pylab as plt
