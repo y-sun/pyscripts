@@ -9,7 +9,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="input file of helmholtz-volume from Phonopy",action='store')
 parser.add_argument("-t","--temperatures", help="temperatures to be output", nargs='*',action='store')
-parser.add_argument("-p","--press", help="pressure range", nargs='*',action='store')
+parser.add_argument("-p","--press", help="pmin pmax dp", nargs='*',action='store')
 parser.add_argument("-n","--natom", help="atom #, changes results to per-atom value", action='store')
 args = parser.parse_args()
 
@@ -32,7 +32,10 @@ def get_BM(eos,name,temp,vmin):
     birch_murn = eos
     # compute PH
     Pmin=float(args.press[0]); Pmax=float(args.press[1])
-    dP=1.0
+    if(len(args.press)==3):
+        dP=float(args.press[2])
+    else:
+        dP=0.5
     Pn=int((Pmax-Pmin)/dP+0.5)+1
     pfit = np.linspace(Pmin,Pmax,Pn)
     vfit = []
