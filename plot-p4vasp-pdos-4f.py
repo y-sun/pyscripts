@@ -18,9 +18,15 @@ plt.rcParams.update({'font.size': 16})
 calc = Calculation.from_path(".")
 data = calc.dos.read(selection=args.orbitals)
 
-
 d=data[ list(data)[2] ] 
 f=data[ list(data)[3] ]
+
+fout=open("PDOS_df.dat",'w+')
+print("#E-Ef dos_d dos_f",file=fout)
+for k in range(data['energies'].size):
+    print(data['energies'][k],d[k],f[k],file=fout)
+fout.close()
+
 plt.plot(data['energies'],d,c='g',label=list(data)[2])
 plt.plot(data['energies'],f,c='r',label=list(data)[3])
 plt.axvline(0.0,ls='--',c='k')
