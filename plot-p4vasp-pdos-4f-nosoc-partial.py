@@ -14,6 +14,6 @@ for k in range(17):
 print("", file=fout)
 for k in range(data['energies'].size):
     for i in range(17):
-        print(tag[k]*data[ ldata[i] ][k], end=" ", file=fout)
+        print(tag[i]*data[ ldata[i] ][k], end=" ", file=fout)
     print("",file=fout)
 fout.close()
