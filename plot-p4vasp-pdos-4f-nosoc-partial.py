@@ -5,6 +5,7 @@ from py4vasp import Calculation
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-p","--plot", help="plot histogram", action='store_true')
+parser.add_argument("-n","--name", help="plot name",action='store')
 args = parser.parse_args()
 
 calc = Calculation.from_path(".")
@@ -44,6 +45,8 @@ if (args.plot):
        plt.plot(data[:,0], data[:,k*2+3], c=col[k], ls=lsp,label=lb)
        plt.plot(data[:,0], data[:,k*2+4], c=col[k], ls=lsp)
    
+   if(args.name is not None):
+       plt.title(args.name)
    plt.axvline(0,ls='dotted',c='k')
    plt.xlim(-2,6)
    #plt.ylim(-10,10)
