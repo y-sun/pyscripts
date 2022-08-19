@@ -6,6 +6,7 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--infile", help="input file",action='store')
 parser.add_argument("-p","--plot", help="plot", action='store_true')
+parser.add_argument("-e","--energy", help="plot energy only", action='store_true')
 parser.add_argument("-a","--allstress", help="also plot off-diagnal stress tensor", action='store_true')
 parser.add_argument("-o","--output", help="output", action='store_true')
 args = parser.parse_args()
@@ -86,6 +87,16 @@ elif(args.plot):
     plt.tight_layout()
     plt.savefig('pande.png')
     #plt.show()
+
+if(args.energy):
+    plt.figure(figsize=(6,5))
+    plt.rcParams.update({'font.size': 12})
+    plt.plot(step,ee,label='total energy')
+    plt.ylabel("E (eV)")
+    plt.xlabel("MD step")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig('energy.png')
 
 if(args.output):
     fout=open("pande.dat","w+")
