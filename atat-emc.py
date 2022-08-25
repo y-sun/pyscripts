@@ -6,8 +6,8 @@ import pylab as plt
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--input", help="emc2 output",action='store')
 parser.add_argument("-r","--ref", help="reference energy at x=0 and 1",nargs="*",action='store')
-parser.add_argument("-p","--plot", help="plot histogram", action='store_true')
-parser.add_argument("-n","--name", help="plot name",action='store')
+parser.add_argument("-p","--plot", help="plot x v.s.G/H/S", action='store_true')
+parser.add_argument("-s","--show", help="show plot", action='store_true')
 args = parser.parse_args()
 
 data=np.loadtxt(args.input)
@@ -80,5 +80,7 @@ if(args.plot):
     plt.legend()
     
     plt.tight_layout()
-    plt.show()
+    plt.savefig('mc.png')
+    if(args.show):
+        plt.show()
 
