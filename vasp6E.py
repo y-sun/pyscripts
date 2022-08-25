@@ -132,5 +132,5 @@ else:
             else:
                 print("%10.6f %10.6f %10.4f "%(aV[kk]/natom, Ep[kk], ap[kk])+stress[kk])
 if(args.magmom):
-    print("magnetization, mag.abs: %s uB/cell, %10.4f uB/cell"%(Mag, Mab))
+    print("magnetization, mag.abs: %s uB/cell, %10.4f uB/cell (from sum of spdf, no interstitial!!!)"%(Mag, Mab))
         #print("%10.6f %10.6f %10.4f %4d"%(aV[kk]/natom, Ep[kk], press[kk],kk+1))
