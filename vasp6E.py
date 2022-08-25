@@ -8,7 +8,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("-i","--infile", help="input outcar file",action='store')
 parser.add_argument("-c","--cell", help="per cell", action='store_true')
-parser.add_argument("-m","--magmom", help="find magnetization", action='store_true')
+parser.add_argument("-m","--magmom", help="find magnetization (sum of spdf, no interstitial!!!)", action='store_true')
 parser.add_argument("-n","--noext", help="no extropolation to sigma->0", action='store_true')
 parser.add_argument("-s","--simple", help="only E & V", action='store_true')
 parser.add_argument("-e","--ele", help="including electronic entropy, TOTEN", action='store_true')
