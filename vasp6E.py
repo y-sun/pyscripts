@@ -69,7 +69,7 @@ for line in fin:
     if("NELM" in line and ("=" in line)):
         ll=line.split()
         nelm=int(ll[2].strip(";"))
-    if("magnetization (x)" in line):
+    if(args.magmom and "magnetization (x)" in line):
         tag=0; Mab=0 ; mab=0
         for line in fin:
             ll=line.split()
