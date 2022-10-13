@@ -14,6 +14,7 @@ parser.add_argument("-t","--title", help="plot title",action='store')
 parser.add_argument("-e","--energy", help="fermi energy (0 for vaspkit)",action='store')
 parser.add_argument("-x","--xlim", help="range for dos", nargs='*',action='store')
 parser.add_argument("-y","--ylim", help="range for band", nargs='*',action='store')
+parser.add_argument("-c","--scaling", help="multiply the PDOS by a factor", action='store')
 parser.add_argument("-s","--show", help="show plot", action='store_true')
 
 args = parser.parse_args()
@@ -46,7 +47,10 @@ for line in fin:
     ll=line.split()
     if(len(ll)==0):
         break
-    k_name.append(ll[0])
+    if(ll[0]=="GAMMA"):
+        k_name.append("G")
+    else:
+        k_name.append(ll[0])
     k_pos.append(float(ll[1]))
 fin.close()
 
@@ -64,16 +68,20 @@ ax0.set_ylabel('$E-E_f$ (eV)')
 # dos
 ax1=plt.subplot(gs[1])
 nfile=len(args.pdos)
+if(args.scaling is not None):
+    scaling=float(args.scaling)
+else:
+    scaling=1.0
 for i in range(nfile):
     data=np.loadtxt(args.pdos[i],skiprows=1)
-    ax1.plot(data[:,-1],data[:,0]-Ef,label=args.pdos[i].split('.')[0])
+    ax1.plot(data[:,-1]*scaling,(data[:,0]-Ef),label=args.pdos[i].split('.')[0])
 ax1.axhline(0.0,ls='--',c='k')
 ax1.yaxis.tick_right()
 if(args.xlim is not None):
 	ax1.set_xlim(float(args.xlim[0]), float(args.xlim[1]))
 if(args.ylim is not None):
 	ax1.set_ylim(float(args.ylim[0]), float(args.ylim[1]))
-ax1.set_xlabel('PDOS')
+ax1.set_xlabel('DOS (States/eV/spin/f.u.)')
 ax1.legend(loc='upper right',fontsize=12)
 
 plt.title(args.title)

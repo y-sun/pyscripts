@@ -39,7 +39,10 @@ for line in fin:
     ll=line.split()
     if(len(ll)==0):
         break
-    k_name.append(ll[0])
+    if(ll[0]=="GAMMA"):
+        k_name.append("G")
+    else:
+        k_name.append(ll[0])
     k_pos.append(float(ll[1]))
 fin.close()
 
