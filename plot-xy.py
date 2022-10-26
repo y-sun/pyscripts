@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 fls=args.inputs
 plt.figure(figsize=(8,6))
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 14, 'font.family': 'serif'})
 
 if(args.legend is None):
     names=args.inputs
@@ -41,10 +41,8 @@ for ifl in fls:
     plt.plot(data[:,0],data[:,1],linestyle=lshp[ct],color=colors[ct],label=names[ct])
     ct+=1
 
-if(len(fls) > 8):
+if(len(fls) > 8 and (args.legend is not None)):
     plt.legend(ncol=2) #,prop={'size': 12}) #bbox_to_anchor=(1, .95))
-else:
-    plt.legend()
 if(args.title is not None): 
     plt.title(args.title)
 if(args.xlabel is not None):
