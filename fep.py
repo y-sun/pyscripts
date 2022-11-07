@@ -26,7 +26,7 @@ Ec=data[:,2]
 dE=Ea-Ec
 print("total steps:",ntotal)
 print("averaged steps:",nave)
-print("std. of energy difference:",np.std(dE))
+print("mean, std. of energy difference:",np.mean(dE),np.std(dE))
 
 e_dE = np.exp( -(Ea-Ec)/kB/T )
 
