@@ -6,20 +6,30 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f","--file", help="band.dat file", action='store')
-parser.add_argument("-n","--nk", help="number of kpoints, sum of k-path + 1",action='store')
+#parser.add_argument("-n","--nk", help="number of kpoints, sum of k-path + 1",action='store')
 parser.add_argument("-e","--fermi", help="fermi level",action='store')
 parser.add_argument("-p","--prefactor", help="a prefactor for unit conversion",action='store')
 args = parser.parse_args()
 
 fin=open(args.file,"r")
-nk=int(args.nk)
+#nk=int(args.nk)
 Ef=float(args.fermi)
 factor=float(args.prefactor)
 
 tot_line=len(fin.readlines())
 fin.seek(0)
 
+nk=0
+for line in fin:
+   ll=line.split()
+   if(len(ll)==0):
+      break
+   else:
+      nk+=1
+fin.seek(0)
+
 nband=int(  (tot_line)/(nk+1) + 0.5 )
+print("# of kps:", nk)
 print("# of band:", nband)
 
 x=[]
