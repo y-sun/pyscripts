@@ -17,7 +17,11 @@ parser.add_argument("-m","--match", help="match with the first coordinate", acti
 args = parser.parse_args()
 
 #nspacing=50; kpoints=['G','X','W','K','G','L']
-nspacing=int(args.number); kpoints=args.kp
+if(args.number is not None):
+   nspacing=int(args.number); kpoints=args.kp
+else:
+   nspacing=None
+   kpoints=['0','1']
 
 #fls=sorted(glob.glob("*/qedfpt444/merge-dyns/disp.freq.gp"))
 #fls=["./disp.freq.gp","../disp.freq.gp"]
@@ -66,8 +70,16 @@ for ifl in fls:
 
 data=np.loadtxt(fls[0])
 ndata=data.shape[0]
-nv=int((ndata-1)/nspacing+0.5)
-vx=[data[k*nspacing][0] for k in range(1,nv)]
+if(nspacing is not None):
+   nv=int((ndata-1)/nspacing+0.5)
+   vx=[data[k*nspacing][0] for k in range(1,nv)]
+else:
+   nv=1
+   vx=[]
+print(nv)
+print(vx)
+#nv=int((ndata-1)/nspacing+0.5)
+#vx=[data[k*nspacing][0] for k in range(1,nv)]
 
 for iv in vx:
     plt.axvline(iv,color='k',lw=0.5)
