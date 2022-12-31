@@ -5,7 +5,7 @@ import sys
 
 data=np.loadtxt('pande.dat',skiprows=1)
 
-fin=open('merge.xdatcar','r')
+fin=open('CONTCAR','r')
 fin.readline()
 fac=float(fin.readline().split()[0])
 box=[]
@@ -16,7 +16,7 @@ fin.readline()
 ll=fin.readline().split()
 na=[float(k) for k in ll]
 natom=np.sum(na)
-V=box[0]*box[1]*box[2]/natom
+V=fac**3*box[0]*box[1]*box[2]/natom
 
 E=np.mean(data[:,2])/natom
 P=np.mean(data[:,1])
