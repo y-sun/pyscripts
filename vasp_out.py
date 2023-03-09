@@ -10,17 +10,21 @@ parser.add_argument("-p","--path", help="vasp working path",action='store')
 parser.add_argument("-m","--magmom", help="find magnetization", action='store_true')
 parser.add_argument("-n","--noext", help="no extropolation to sigma->0", action='store_true')
 parser.add_argument("-e","--ele", help="including electronic entropy, TOTEN", action='store_true')
+parser.add_argument("-t","--ent", help="output enthalpy", action='store_true')
 args = parser.parse_args()
 
 J2eV= 1.602176634e-19
 #prefix=sys.argv[1].strip("*")
 fin=open(args.path+"/OUTCAR","r")
-F=[];E=[]; press=[]; stress=[]; V=[]; Mag='NA'
+F=[];E=[]; press=[]; stress=[]; V=[]; Mag='NA'; H=[]
 natom=0; vtag=0
 for line in fin:
     #if("external pressure " in line):
     #   ll=line.split()
     #   press.append(float(ll[3]))
+    #if("volume of cell : " in line):
+    #   ll=line.split()
+    #   V.append(float(ll[4]))
     if("NIONS" in line):
         ll=line.split()
         natom=int(ll[len(ll)-1])
@@ -53,9 +57,9 @@ for line in fin:
                     mab += abs(float(ll[-1]))
             elif(len(ll)==0):
                 break
-    #if("enthalpy is  TOTEN" in line):
-    #    ll=line.split()
-    #    Ep.append(float(ll[4])/natom)
+    if("enthalpy is  TOTEN" in line):
+        ll=line.split()
+        H.append(float(ll[4])/natom)
 
 aE=np.array(E)
 aF=np.array(F)
@@ -77,10 +81,15 @@ fin.close()
 
 
 if(args.ele):
-    print("%10.6ff"%(Fp[-1]), end=" ")
-
+    if(args.ent):
+        print("%10.6f"%(H[-1]), end=" ")
+    else:
+        print("%10.6f"%(Ep[-1]), end=" ")
 else:
-    print("%10.6f"%(Ep[-1]), end=" ")
+    if(args.ent):
+        print("%10.6f"%(H[-1]), end=" ")
+    else:
+        print("%10.6f"%(Ep[-1]), end=" ")
 
 for k in range(len(ele)):
     print(ele[k]+"_"+natom[k],end=" ")
