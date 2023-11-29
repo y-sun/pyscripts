@@ -44,7 +44,7 @@ for line in fin:
          continue
       else:
          natom=int(line.split()[0])
-   if('Step Temp' in line):
+   if('Step Temp' in line or 'Step          Temp' in line):
       l_arg=line.split()
       break
 print("natom",natom, "timestep",timestep)
