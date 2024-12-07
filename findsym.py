@@ -9,6 +9,7 @@ import sys
 # sys.path.append('/opt/spglib-1.6.0/lib/python')
 # sys.path.append('/opt/ase-3.8.1.3440')
 #https://github.com/fxcoudert/tools/blob/master/findsym.py
+# pip install spglib==2.0.2
 
 import ase
 import ase.io
