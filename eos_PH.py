@@ -121,6 +121,8 @@ if (args.noplot):
     exit()
 
 import pylab as plt
+import matplotlib
+matplotlib.use('Agg')
 vraw = np.linspace(min(vol),max(vol),100)
 # EV
 plt.subplot(2,1,1)

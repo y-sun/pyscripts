@@ -4,6 +4,8 @@ import numpy as np
 import sys
 import pylab as plt
 import argparse
+import matplotlib
+matplotlib.use('Agg')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-b","--band", help="REFORMATTED_BAND file", nargs='*', action='store')
