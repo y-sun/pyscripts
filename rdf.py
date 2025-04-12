@@ -13,8 +13,12 @@ import sys
 import matplotlib
 
 if __name__ == '__main__':
+    if(len(sys.argv) != 2):
+        print('rdf.py file radius')
+        exit()
     structure = Structure.from_file(sys.argv[1])
-    structure.make_supercell(4)
+    radius=float(sys.argv[2])
+    structure.make_supercell(radius)
     
     coords = structure.cart_coords
     noise = np.random.normal(loc=0.0, scale=0.01, size=(coords.shape))
@@ -25,7 +29,7 @@ if __name__ == '__main__':
     plt.figure(figsize=(8,6))
     plt.rcParams.update({'font.size': 16})
     plt.plot(radii, g_r)
-    plt.xlim(0,8)
+    plt.xlim(0,radius)
     plt.xlabel('r (Angstrom)')
     plt.ylabel('g(r)')
     plt.savefig('rdf.png')
