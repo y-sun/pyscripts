@@ -11,9 +11,10 @@ from pymatgen.core import Structure
 import pylab as plt
 import sys
 import matplotlib
+matplotlib.use('Agg')
 
 if __name__ == '__main__':
-    if(len(sys.argv) != 2):
+    if(len(sys.argv) != 3):
         print('rdf.py file radius')
         exit()
     structure = Structure.from_file(sys.argv[1])
