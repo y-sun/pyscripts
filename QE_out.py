@@ -53,7 +53,7 @@ def read_QE(fin, vol0, cal_tag):
                continue
            elif(("convergence has been achieved" in line) and cal_tag=="Str_Opt"):
                continue
-           elif("Writing output data" in line):
+           elif("output data" in line):
                break
            elif("End of BFGS Geometry Optimization" in line):
                new_tag="Str_Opt_end"
@@ -95,7 +95,7 @@ def read_QE(fin, vol0, cal_tag):
                continue
            elif(("convergence has been achieved" in line) and cal_tag=="Str_Opt"):
                continue
-           elif("Writing output data" in line):
+           elif("output data" in line):  # for QE7, in QE6 this should be "Writing output data"
                break
            elif("End of BFGS Geometry Optimization" in line):
                new_tag="Str_Opt_end"
