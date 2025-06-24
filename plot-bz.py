@@ -87,8 +87,9 @@ if __name__ == "__main__":
     print(4+nV+nK,file=fout)
     print("1st BZ, scaled by ",scaling,file=fout)
     print("G   %16.6f%16.6f%16.6f"%(0,0,0)+"   # Gamma center",file=fout)
-    for k in range(3):
-        print("X   %16.6f%16.6f%16.6f"%(icell[k][0]*scaling, icell[k][1]*scaling, icell[k][2]*scaling)+"   # recp. vect",file=fout)
+    print("A   %16.6f%16.6f%16.6f"%(icell[0][0]*scaling, icell[0][1]*scaling, icell[0][2]*scaling)+"   # recp. vect",file=fout)
+    print("B   %16.6f%16.6f%16.6f"%(icell[1][0]*scaling, icell[1][1]*scaling, icell[1][2]*scaling)+"   # recp. vect",file=fout)
+    print("C   %16.6f%16.6f%16.6f"%(icell[2][0]*scaling, icell[2][1]*scaling, icell[2][2]*scaling)+"   # recp. vect",file=fout)
     for k in range(nV):
         print("V   %16.6f%16.6f%16.6f"%(Verts_bz[k][0]*scaling, Verts_bz[k][1]*scaling, Verts_bz[k][2]*scaling), file=fout)
     for k in range(nK):
