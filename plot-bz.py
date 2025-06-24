@@ -95,14 +95,3 @@ if __name__ == "__main__":
         cart=sym_points[k][0]*icell[0]+sym_points[k][1]*icell[1]+sym_points[k][2]*icell[2]
         print("K   %16.6f%16.6f%16.6f   #"%(cart[0]*scaling, cart[1]*scaling, cart[2]*scaling)+sym_name[k], file=fout)
     fout.close()
-
-    # PLOT
-    from matplotlib import pyplot as plt
-    plt.rcParams["figure.figsize"] = [7.50, 3.50]
-    plt.rcParams["figure.autolayout"] = True
-    fig = plt.figure()
-    ax = fig.add_subplot(projection="3d")
-    x, y, z = [1, 1.5], [1, 2.4], [3.4, 1.4]
-    ax.scatter(x, y, z, c='red', s=100)
-    ax.plot(x, y, z, color='black')
-    plt.show()
